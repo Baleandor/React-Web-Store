@@ -1,5 +1,6 @@
 import React from "react";
 
+
 export default function DoksStock({ imgUrl, title, price, description }) {
 
     return (
@@ -7,6 +8,10 @@ export default function DoksStock({ imgUrl, title, price, description }) {
             <img src={imgUrl} className="w-60 h-52 m-4 inline border-2 border-lime-600"></img>
             <div className="text-lime-400">{title}</div>
             <div className="text-lime-400">${price}</div>
+            <div className="inline-block">
+                <button className="bg-lime-400 mx-2 rounded-sm">Wishlist</button>
+                <button className="bg-lime-400 rounded-sm">Cart</button>
+            </div>
             <div className="text-lime-400">{description}</div>
 
         </div>

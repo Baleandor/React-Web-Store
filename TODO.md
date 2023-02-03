@@ -37,4 +37,4 @@ NEXT ON THE LIST
  - do the dropdown menu for the categories
  - adjust images
  
- - give Dok's items buttons for - add to wishlist and buy
+ - give Dok's items buttons for - add to wishlist and add to cart
