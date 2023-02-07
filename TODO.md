@@ -35,6 +35,14 @@ sell(create) an item
 
 NEXT ON THE LIST
  - do the dropdown menu for the categories
+
+
+
+ 
  - adjust images
  
- - give Dok's items buttons for - add to wishlist and add to cart
+ - add input check at product creation page
+    - Name must be at least 3 chars long
+    - Price must be a positive number larger than 0
+    - Description must be at least 10 chars log
+    - URL must be valid

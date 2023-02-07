@@ -27,7 +27,9 @@ export default function App() {
         <div className="grid grid-cols-3">
           <div className="flex-box justify-start text-center m-4">YOUR AD SPACE HERE</div>
 
-          <Outlet />
+          <div className="flex-box justify-start text-center m-4">
+            <Outlet />
+          </div>
 
           <div className="flex-box justify-end text-center m-4">YOUR AD SPACE HERE</div>
         </div>

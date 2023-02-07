@@ -1,7 +1,13 @@
 import React from "react";
 
+type StockProps = {
+    imgUrl: string,
+    title: string,
+    price: number,
+    description: string
+}
 
-export default function DoksStock({ imgUrl, title, price, description }) {
+export default function DoksStock({ imgUrl, title, price, description }: StockProps) {
 
     return (
         <div className=" text-center place-items-center m-2">
@@ -9,8 +15,8 @@ export default function DoksStock({ imgUrl, title, price, description }) {
             <div className="text-lime-400">{title}</div>
             <div className="text-lime-400">${price}</div>
             <div className="inline-block">
-                <button className="bg-lime-400 mx-2 rounded-sm">Wishlist</button>
-                <button className="bg-lime-400 rounded-sm">Cart</button>
+                <button className="bg-lime-400 mx-2 rounded-sm">Add to Wishlist</button>
+                <button className="bg-lime-400 rounded-sm w-8">Cart</button>
             </div>
             <div className="text-lime-400">{description}</div>
 
