@@ -34,8 +34,9 @@ sell(create) an item
 
 
 NEXT ON THE LIST
- - do the dropdown menu for the categories
-
+ - LEARN AXIOS and TANSTACK/QUERY
+ 
+ - Make Category drop down items link to their respective pages
 
 
  
