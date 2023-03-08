@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 const FormSchema = z.object({
     productName: z.string().min(4, "Product name must be at least 4 characters long!"),
-    productPrice: z.number().min(1, "Product price must be at least $1").int(),
+    productPrice: z.number().min(1, "Product price must be at least $1 !").int(),
     productDescription: z.string().min(10, "Product description must be at least 10 characters long!").max(25, "Product description cannot be more than 25 characters long!"),
     productImageUrl: z.string().url("Your link must start with http:// or https:// !")
 })
@@ -22,10 +22,15 @@ interface IFormInputs {
 export default function SellItemsPage() {
 
 
-    const { register, handleSubmit, formState: { errors } } = useForm<IFormInputs>({ resolver: zodResolver(FormSchema) });
+    const { register, handleSubmit, formState: { errors } } = useForm<IFormInputs>({ resolver: zodResolver(FormSchema), mode: "onSubmit" });
 
     //TODO change onSubmit to be an actual POST
     const onSubmit: SubmitHandler<IFormInputs> = (data) => console.log(data);
+
+    const errorMessage = errors.productName?.message || errors.productPrice?.message || errors.productDescription?.message || errors.productImageUrl?.message
+
+
+
 
     return (
         <>
@@ -41,7 +46,7 @@ export default function SellItemsPage() {
                 <div className="m-4">
                     <div className="mr-2 align-top text-lime-400">Product Description</div>
 
-                    <textarea {...register("productDescription")} className="h-60 w-60 mt-1 rounded bg-lime-800 outline-lime-300"></textarea>
+                    <textarea {...register("productDescription")} className="h-60 w-60 mt-1 rounded bg-lime-800 outline-lime-300 text-lime-50"></textarea>
                 </div>
                 <div className="m-4">
                     <div className="mr-2 text-lime-400">Product Image URL</div>
@@ -51,19 +56,18 @@ export default function SellItemsPage() {
                 <input type="submit" className="text-lime-400 w-20 h-7 text-center border border-lime-400 rounded" />
             </form>
 
-            {errors ?
-                <div className="w-auto text-red-600 text-2xl  fixed right-10 bottom-0">
-                    <div className="p-1">
-                        {errors.productName ? <p>{errors.productName?.message}</p> : ''}
-                        {errors.productPrice ? <p>{errors.productPrice?.message}</p> : ''}
-                        {errors.productDescription ? <p>{errors.productDescription?.message}</p> : ''}
-                        {errors.productImageUrl ? <p>{errors.productImageUrl?.message}</p> : ''}
+            {!!errorMessage &&
+                <div className="w-auto fixed right-10 bottom-0">
+                    <div className="p-1 text-lime-200 bg-lime-900 rounded text-2xl">
+                        <p>
+                            {errorMessage}
+                        </p>
                     </div>
                     <div>
                         <img src="/images/KRUMPIN.png" className="mt-5"></img>
                     </div>
                 </div>
-                : ''}
+            }
 
         </>
     )

@@ -1,21 +1,18 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import React from "react"
 import { createBrowserRouter, createRoutesFromElements, Outlet, Route, RouterProvider } from "react-router-dom"
+import StoreLogo from "./components/common/StoreLogo"
 import UserNavBar from "./components/common/user-nav-bar/UserNavBar"
 import CartPage from "./pages/CartPage"
+import CategoryDetailsPage from "./pages/CategoryDetailsPage"
+import CategoryPage from "./pages/CategoryPage"
 import Home from "./pages/Home"
 import SellItemsPage from "./pages/SellItemsPage"
 
+
+const client = new QueryClient()
+
 export default function App() {
-
-  const cart = new Map
-  //   const addToCart = (e) => {
-  //     if(cart.contains(e.target.id)){
-  // check if item already exists and increase its number
-
-  //     }
-  // cart.push(e.target.id)
-  //   }
-
 
   const Root = () => {
     return (
@@ -40,19 +37,24 @@ export default function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path='/' element={<Root />}>
-        <Route index element={<Home />}></Route>
-        <Route path='/sell-items' element={<SellItemsPage />}></Route>
-        <Route path="/cart" element={<CartPage />}></Route>
+        <Route index element={<Home />} />
+        <Route path='sell-items' element={<SellItemsPage />} />
+        <Route path="cart" element={<CartPage />} />
+        <Route path="categories/:category_id" element={<CategoryPage />} />
+        <Route path="categories/:category_id/:item_id" element={<CategoryDetailsPage />} />
       </Route >
     )
   )
 
 
   return (
-    <div className="flex-box relative">
+    <QueryClientProvider client={client}>
+      <div className="flex-box relative">
 
-      <RouterProvider router={router} />
+        <RouterProvider router={router} />
 
-    </div>
+      </div>
+    </QueryClientProvider>
+
   )
 }
