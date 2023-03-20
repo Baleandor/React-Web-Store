@@ -1,7 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { CategoryItemDetailsType } from "../../types";
+import AddToCart from "./AddToCart";
 
 
 type CategoryItemProps = CategoryItemDetailsType & {
@@ -29,7 +29,7 @@ export default function CategoryItem({ id, title, price, description, image, sho
                     navigate(`/categories/${categoryId}/${id}`)
                 }}>Details</button>}
                 <button className="p-1 bg-lime-800 rounded cursor-pointer">Whishlist</button>
-                <button className="p-1 bg-lime-800 rounded cursor-pointer">Cart</button>
+                <AddToCart id={id}/>
             </div>
         </div>
     )

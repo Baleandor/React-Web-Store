@@ -15,6 +15,8 @@ export default function CategoryItemPage() {
     if (isLoading) return <div className="text-lime-200 p-1 flex justify-center items-center"><span className="bg-lime-900 p-1 rounded">Loading content...</span></div >
 
     if (!data) return null
+
+    
     return (
 
         <CategoryItem {...data} showDescription />

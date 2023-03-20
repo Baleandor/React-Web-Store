@@ -1,7 +1,14 @@
 export type CategoryItemDetailsType = {
-    id: string,
+    id: number,
     title: string,
-    price: string,
+    price: number,
     description: string,
     image: string
+}
+
+export type OfferItemType = {
+    title: string,
+    price: number,
+    description: string,
+    image: string 
 }

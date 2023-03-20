@@ -1,14 +1,16 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import React from "react"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { createBrowserRouter, createRoutesFromElements, Outlet, Route, RouterProvider } from "react-router-dom"
-import StoreLogo from "./components/common/StoreLogo"
 import UserNavBar from "./components/common/user-nav-bar/UserNavBar"
 import CartPage from "./pages/CartPage"
 import CategoryDetailsPage from "./pages/CategoryDetailsPage"
 import CategoryPage from "./pages/CategoryPage"
 import Home from "./pages/Home"
 import SellItemsPage from "./pages/SellItemsPage"
-
+import { CartProvider } from "./hooks/CartContext"
+import Register from "./pages/Register"
+import Login from "./pages/Login"
+import MyOffers from "./pages/MyOffers"
 
 const client = new QueryClient()
 
@@ -22,13 +24,13 @@ export default function App() {
         </div>
 
         <div className="grid grid-cols-3">
-          <div className="flex-box justify-start text-center m-4">YOUR AD SPACE HERE</div>
+          <div className="text-center m-2">YOUR AD SPACE HERE</div>
 
-          <div className="flex-box justify-start text-center m-4">
+          <div className="text-center m-2">
             <Outlet />
           </div>
 
-          <div className="flex-box justify-end text-center m-4">YOUR AD SPACE HERE</div>
+          <div className="text-center m-2">YOUR AD SPACE HERE</div>
         </div>
       </>
     )
@@ -42,19 +44,25 @@ export default function App() {
         <Route path="cart" element={<CartPage />} />
         <Route path="categories/:category_id" element={<CategoryPage />} />
         <Route path="categories/:category_id/:item_id" element={<CategoryDetailsPage />} />
+        <Route path="register" element={<Register/>}/>
+        <Route path="login" element={<Login/>}/>
+        <Route path="search/:id" element={<CategoryDetailsPage />} />
+        <Route path="my-offers" element={<MyOffers/>}/>
       </Route >
     )
   )
 
 
   return (
-    <QueryClientProvider client={client}>
-      <div className="flex-box relative">
+    <CartProvider>
+      <QueryClientProvider client={client}>
+        <div className="flex-box relative">
 
-        <RouterProvider router={router} />
+          <RouterProvider router={router} />
 
-      </div>
-    </QueryClientProvider>
+        </div>
+      </QueryClientProvider>
+    </ CartProvider>
 
   )
 }

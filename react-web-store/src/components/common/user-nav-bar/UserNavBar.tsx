@@ -7,6 +7,8 @@ import UserProfile from "./UserProfile";
 
 
 export default function UserNavBar() {
+   
+
     return (
         <div className="flex h-20 justify-between">
 

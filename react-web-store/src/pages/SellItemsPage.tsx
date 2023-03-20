@@ -2,6 +2,14 @@ import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod'
+import { supabaseClient } from "../supabase/client";
+
+
+const {
+    data: { user },
+} = await supabaseClient.auth.getUser()
+let metadata = user?.user_metadata
+
 
 
 const FormSchema = z.object({
@@ -21,15 +29,11 @@ interface IFormInputs {
 
 export default function SellItemsPage() {
 
-
     const { register, handleSubmit, formState: { errors } } = useForm<IFormInputs>({ resolver: zodResolver(FormSchema), mode: "onSubmit" });
 
-    //TODO change onSubmit to be an actual POST
-    const onSubmit: SubmitHandler<IFormInputs> = (data) => console.log(data);
+    const onSubmit: SubmitHandler<IFormInputs> = async (data) => metadata?.offers.push(data)
 
     const errorMessage = errors.productName?.message || errors.productPrice?.message || errors.productDescription?.message || errors.productImageUrl?.message
-
-
 
 
     return (
@@ -53,7 +57,7 @@ export default function SellItemsPage() {
 
                     <input {...register("productImageUrl")} className="mt-1 rounded bg-lime-800 outline-lime-300"></input>
                 </div>
-                <input type="submit" className="text-lime-400 w-20 h-7 text-center border border-lime-400 rounded" />
+                <button type="submit" className="text-lime-400 w-20 h-7 text-center border border-lime-400 rounded">Submit</button>
             </form>
 
             {!!errorMessage &&

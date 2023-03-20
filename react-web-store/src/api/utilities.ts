@@ -5,7 +5,7 @@ export const getCategories = (): Promise<string[]> => axios.get('https://fakesto
 
 export const getCategory = (category_id: string | undefined): Promise<CategoryItemDetailsType[]> => axios.get(`https://fakestoreapi.com/products/category/${category_id}`).then((response) => response.data)
 
-export const getCategoryItem = (item_id: string | undefined): Promise<CategoryItemDetailsType> => axios.get(`https://fakestoreapi.com/products/${item_id}`).then((response) => response.data)
+export const getCategoryItem = (item_id: string | number | undefined): Promise<CategoryItemDetailsType> => axios.get(`https://fakestoreapi.com/products/${item_id}`).then((response) => response.data)
 
-
+export const getAllItems = (): Promise<CategoryItemDetailsType[]> => axios.get(`https://fakestoreapi.com/products`).then((response) => response.data)
 

@@ -5,7 +5,7 @@ export default function StoreLogo() {
     return (
         <Link to={'/'}>
             <div className="cursor-pointer">
-                <img src="/images/da-goff-rocker.jpg" className="w-44 h-20"></img>
+                <img src="/images/goffrocker.png" className="w-44 h-20"></img>
             </div>
         </Link>
     )
