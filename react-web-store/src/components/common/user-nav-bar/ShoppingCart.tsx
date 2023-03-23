@@ -2,12 +2,12 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../../../hooks/CartContext";
 
+
 export default function ShoppingCart() {
 
     const navigate = useNavigate()
 
     const { cartQuantity } = useCart()
-
 
 
     return (

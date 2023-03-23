@@ -22,6 +22,4 @@ export default function UserNavBar() {
 
         </div>
     )
-
-
 }

@@ -13,7 +13,7 @@ export default function Categories() {
     return (
         <>
             <div onClick={handleToggleDropdown} className="cursor-pointer p-0.5">
-                <div className="text-lime-400">Categories</div>
+                <div className="text-cyan-400">Categories</div>
             </div>
 
             {showCategories && <CategoriesDropdown handleClick={handleToggleDropdown} />}

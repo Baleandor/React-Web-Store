@@ -20,7 +20,7 @@ export default function CategoriesDropdown({ handleClick }: CategoriesDropdownPr
 
 
     return (
-        <div className="cursor-pointer absolute top-7 bg-lime-900  text-lime-400 w-24 rounded z-10">
+        <div className="cursor-pointer absolute top-7 bg-lime-900  text-cyan-400 w-24 rounded z-10">
             <ul>
                 {categories.map((category) => {
                     return <li key={category} className="p-1 hover:text-lime-100 hover:underline" onClick={() => {

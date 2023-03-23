@@ -11,6 +11,9 @@ import { CartProvider } from "./hooks/CartContext"
 import Register from "./pages/Register"
 import Login from "./pages/Login"
 import MyOffers from "./pages/MyOffers"
+import SearchResult from "./pages/SearchResult"
+import MyWishlist from "./pages/MyWishlist"
+
 
 const client = new QueryClient()
 
@@ -24,17 +27,18 @@ export default function App() {
         </div>
 
         <div className="grid grid-cols-3">
-          <div className="text-center m-2">YOUR AD SPACE HERE</div>
+          <div className="text-center text-lime-400 m-2">YOUR AD SPACE HERE</div>
 
           <div className="text-center m-2">
             <Outlet />
           </div>
 
-          <div className="text-center m-2">YOUR AD SPACE HERE</div>
+          <div className="text-center text-lime-400 m-2">YOUR AD SPACE HERE</div>
         </div>
       </>
     )
   }
+
 
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -44,10 +48,12 @@ export default function App() {
         <Route path="cart" element={<CartPage />} />
         <Route path="categories/:category_id" element={<CategoryPage />} />
         <Route path="categories/:category_id/:item_id" element={<CategoryDetailsPage />} />
-        <Route path="register" element={<Register/>}/>
-        <Route path="login" element={<Login/>}/>
-        <Route path="search/:id" element={<CategoryDetailsPage />} />
-        <Route path="my-offers" element={<MyOffers/>}/>
+        <Route path="register" element={<Register />} />
+        <Route path="login" element={<Login />} />
+        <Route path="search/:item_id" element={<CategoryDetailsPage />} />
+        <Route path="search-result/:searchParams" element={<SearchResult />} />
+        <Route path="my-offers" element={<MyOffers />} />
+        <Route path="my-wishlist" element={<MyWishlist />} />
       </Route >
     )
   )

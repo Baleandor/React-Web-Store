@@ -71,7 +71,7 @@ const errorMessage = errors.email?.message || errors.username?.message || errors
                     <div className="p-1 text-lime-400">Confirm Password</div>
                     <input {...register("repass")} type={"password"} className=" bg-lime-800 outline-lime-300"></input>
                 </div>
-                <button className="p-1 text-green-400">Register</button>
+                <button className="p-1 text-cyan-400">Register</button>
                 <div className="p-1">
                     <span className="p-1 text-lime-400">Already have an account?</span>
                     <button type="submit" className="underline text-green-400" onClick={()=> navigate('/login')}>Login</button>

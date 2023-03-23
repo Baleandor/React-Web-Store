@@ -11,7 +11,7 @@ const {
 
 
 let { data: offers } = await supabaseClient
-    .from('offers')
+    .from('wishlist')
     .select('*')
     .eq('ownerid', user?.id)
 
@@ -23,7 +23,7 @@ let { data: offers } = await supabaseClient
 //     imageurl: string
 // }
 
-export default function MyOffers() {
+export default function MyWishlist() {
 
     console.log(typeof offers)
     const navigate = useNavigate()
@@ -53,7 +53,6 @@ export default function MyOffers() {
                             </div>
 
                             <div className="flex items-center justify-center">
-                                <button className="p-1 mx-1 flex-1 max-w-[30px] text-cyan-400" onClick={() => { }}>Edit</button>
                                 <button className="p-1 flex-1 max-w-[30px] text-cyan-400" onClick={() => { }}>Delete</button>
                             </div>
                         </div>

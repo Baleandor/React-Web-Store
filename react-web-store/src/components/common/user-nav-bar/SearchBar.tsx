@@ -7,6 +7,7 @@ import SearchBarAutofillDropdown from "./SearchBarAutofillDropdown";
 import SearchIcon from "./SearchIcon";
 import { debounce } from "lodash";
 
+
 export default function SearchBar() {
 
     const { data, isError, error, isLoading } = useQuery<CategoryItemDetailsType[], Error>(["all-items"], getAllItems)
@@ -18,11 +19,12 @@ export default function SearchBar() {
         setSearchParams(event.target.value.toLocaleLowerCase())
     }
 
-const debouncedOnChange = debounce(handleOnChange, 300)
+    const debouncedOnChange = debounce(handleOnChange, 250)
 
     const autofillResult = data?.filter((result) => {
         return result.title.toLocaleLowerCase().includes(searchParams)
     })
+
 
     return (
         <div className="w-80 h-10 flex relative items-center justify-center top-5">
@@ -31,10 +33,8 @@ const debouncedOnChange = debounce(handleOnChange, 300)
             </div>
             <div className="inline-flex">
                 <input className=" bg-lime-500 w-42 h-8 outline-lime-300" onChange={debouncedOnChange}></input>
-                <SearchIcon searchParams={searchParams} data={data} />
-                {searchParams.length > 0 && <SearchBarAutofillDropdown data={autofillResult} />
-
-                }
+                <SearchIcon searchParams={searchParams} />
+                {searchParams.length > 0 && <SearchBarAutofillDropdown data={autofillResult} />}
             </div>
 
         </div>

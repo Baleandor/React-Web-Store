@@ -1,8 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
 import React, { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { getCategoryItem } from "../../api/utilities";
 import { useCart } from "../../hooks/CartContext";
 import { CategoryItemDetailsType } from "../../types";
+
 
 type ItemInCartProps = {
     id: number,
@@ -12,10 +13,7 @@ type ItemInCartProps = {
 
 export default function ItemInCart({ id, quantity }: ItemInCartProps) {
 
-
-
     const { data, isError, error, isLoading } = useQuery<CategoryItemDetailsType, Error>(["category", id], () => getCategoryItem(id))
-
 
     const { increaseItemCartQuantity, decreaseItemCartQuantity, removeFromCart, setItemPrice } = useCart()
 
@@ -27,7 +25,6 @@ export default function ItemInCart({ id, quantity }: ItemInCartProps) {
             setItemPrice(data.id, data.price)
         }
     }, [data?.price, data?.id, setItemPrice])
-
 
 
     return (
@@ -43,10 +40,10 @@ export default function ItemInCart({ id, quantity }: ItemInCartProps) {
                 </div>
 
                 <div className="flex items-center justify-center">
-                    <button className="p-1 mx-1 border border-lime-400 rounded flex-1 max-w-[30px]" onClick={() => increaseItemCartQuantity(id)}>+</button>
-                    {quantity > 1 && <div className="p-1 text-center flex-1 max-w-[30px]">x{quantity}</div>}
-                    <button className="p-1 mx-1 border border-lime-400 rounded flex-1 max-w-[30px]" onClick={() => decreaseItemCartQuantity(id)}>-</button>
-                    <button className="p-1 mx-1 border border-lime-400 rounded flex-1 max-w-[30px]" onClick={() => removeFromCart(id)}>X</button>
+                    <button className="p-1 mx-1 border border-lime-400 rounded flex-1 max-w-[30px] text-cyan-400" onClick={() => increaseItemCartQuantity(id)}>+</button>
+                    {quantity > 1 && <div className="p-1 text-center flex-1 max-w-[30px] text-lime-400">x{quantity}</div>}
+                    <button className="p-1 mx-1 border border-lime-400 rounded flex-1 max-w-[30px] text-cyan-400" onClick={() => decreaseItemCartQuantity(id)}>-</button>
+                    <button className="p-1 mx-1 border border-lime-400 rounded flex-1 max-w-[30px] text-cyan-400" onClick={() => removeFromCart(id)}>X</button>
                     <span className="flex-1 max-w-[30px]"> ${totalPrice}</span>
                 </div>
 

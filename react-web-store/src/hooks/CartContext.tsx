@@ -1,6 +1,6 @@
-import React, { createContext, ReactNode, useCallback, useContext, useMemo, useState } from "react";
-import cloneDeep from 'lodash';
+import React, { createContext, ReactNode, useCallback, useContext} from "react";
 import { useLocalStorage } from "./useLocalStorage";
+
 
 type CartProviderProps = {
     children: ReactNode
@@ -28,7 +28,6 @@ const CartContext = createContext({} as CartContext)
 export function useCart() {
     return useContext(CartContext)
 }
-
 
 
 export function CartProvider({ children }: CartProviderProps) {

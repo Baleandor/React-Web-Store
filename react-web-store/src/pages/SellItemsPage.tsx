@@ -3,13 +3,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod'
 import { supabaseClient } from "../supabase/client";
-
-
-const {
-    data: { user },
-} = await supabaseClient.auth.getUser()
-let metadata = user?.user_metadata
-
+import { useNavigate } from "react-router-dom";
 
 
 const FormSchema = z.object({
@@ -29,9 +23,26 @@ interface IFormInputs {
 
 export default function SellItemsPage() {
 
+    const navigate = useNavigate()
+
     const { register, handleSubmit, formState: { errors } } = useForm<IFormInputs>({ resolver: zodResolver(FormSchema), mode: "onSubmit" });
 
-    const onSubmit: SubmitHandler<IFormInputs> = async (data) => metadata?.offers.push(data)
+    const onSubmit: SubmitHandler<IFormInputs> = async (data) => {
+        try {
+
+            const { data: { user } } = await supabaseClient.auth.getUser()
+
+            const { data: info, error } = await supabaseClient
+                .from('offers')
+                .insert([
+                    { title: data.productName, price: data.productPrice, description: data.productDescription, imageurl: data.productImageUrl, ownerid: user?.id },
+                ])
+
+            navigate('/my-offers')
+        } catch (error) {
+            alert(error)
+        }
+    }
 
     const errorMessage = errors.productName?.message || errors.productPrice?.message || errors.productDescription?.message || errors.productImageUrl?.message
 
@@ -57,7 +68,7 @@ export default function SellItemsPage() {
 
                     <input {...register("productImageUrl")} className="mt-1 rounded bg-lime-800 outline-lime-300"></input>
                 </div>
-                <button type="submit" className="text-lime-400 w-20 h-7 text-center border border-lime-400 rounded">Submit</button>
+                <button type="submit" className="text-cyan-400 w-20 h-7 text-center border border-lime-400 rounded">Submit</button>
             </form>
 
             {!!errorMessage &&
@@ -72,8 +83,6 @@ export default function SellItemsPage() {
                     </div>
                 </div>
             }
-
         </>
     )
-
 }
