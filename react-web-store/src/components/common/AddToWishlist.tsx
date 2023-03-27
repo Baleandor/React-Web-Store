@@ -24,13 +24,12 @@ export default function AddToWishlist({ description, imgUrl, title, price }: Add
         if (!data.session?.user) {
             navigate('/login')
         } else {
-            return await supabaseClient
+            await supabaseClient
                 .from('wishlist')
                 .insert([
                     { title: title, price: price, description: description, imageurl: imgUrl, ownerid: data?.session?.user.id },
                 ])
         }
-
     }
 
 

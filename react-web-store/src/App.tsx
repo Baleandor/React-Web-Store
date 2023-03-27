@@ -13,6 +13,7 @@ import Login from "./pages/Login"
 import MyOffers from "./pages/MyOffers"
 import SearchResult from "./pages/SearchResult"
 import MyWishlist from "./pages/MyWishlist"
+import EditMyOffers from "./pages/EditMyOffers"
 
 
 const client = new QueryClient()
@@ -54,6 +55,7 @@ export default function App() {
         <Route path="search-result/:searchParams" element={<SearchResult />} />
         <Route path="my-offers" element={<MyOffers />} />
         <Route path="my-wishlist" element={<MyWishlist />} />
+        <Route path="edit/:itemid" element={<EditMyOffers />} />
       </Route >
     )
   )
