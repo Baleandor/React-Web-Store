@@ -12,8 +12,10 @@ export default function SearchResult() {
 
     const showDescription = true
 
-    const { data, isError, error, isLoading } = useQuery<CategoryItemDetailsType[], Error>(["all-items"], getAllItems)
+    const { data, error, isLoading } = useQuery<CategoryItemDetailsType[], Error>(["all-items"], getAllItems)
 
+    error && alert(error)
+    
     const autofillResult = data?.filter((result) => {
         if (searchParams) {
             return result.title.toLocaleLowerCase().includes(searchParams)

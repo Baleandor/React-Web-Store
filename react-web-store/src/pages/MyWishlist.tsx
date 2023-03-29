@@ -27,7 +27,9 @@ let { data: offers } = await supabaseClient
 export default function MyWishlist() {
 
 
-    const { data: info, isFetching } = useQuery(['user'], () => supabaseClient.auth.getUser())
+    const { data: info, isFetching, error: screwUp } = useQuery(['user'], () => supabaseClient.auth.getUser())
+
+    screwUp && alert(screwUp)
 
     const userId = info?.data.user?.id
 
@@ -41,10 +43,12 @@ export default function MyWishlist() {
         }, enabled: !!userId
     })
 
+    error && alert(error)
+
     const offers = data?.data || []
 
     const handleDelete = async (id) => {
-      
+
         await supabaseClient
             .from("wishlist")
             .delete()
@@ -53,19 +57,14 @@ export default function MyWishlist() {
 
     const navigate = useNavigate()
 
-
-
     if (!userId && !isFetching) {
         navigate('/login')
-    }
-
-    if (isFetching) {
-        <div>Loading...</div>
     }
 
 
     return (
         <div className="p-2 m-2 text-lime-300 flex flex-col text-center">
+            {isFetching && <div>Loading...</div>}
             {
                 offers?.map((item): any => {
                     return (

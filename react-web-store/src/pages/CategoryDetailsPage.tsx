@@ -10,17 +10,17 @@ export default function CategoryItemPage() {
 
     const { item_id } = useParams()
 
-    const { data, isError, error, isLoading } = useQuery<CategoryItemDetailsType, Error>(["category", item_id], () => getCategoryItem(item_id))
+    const { data, error, isLoading } = useQuery<CategoryItemDetailsType, Error>(["category", item_id], () => getCategoryItem(item_id))
+
+    error && alert(error.message)
 
     if (isLoading) return <div className="text-lime-200 p-1 flex justify-center items-center"><span className="bg-lime-900 p-1 rounded">Loading content...</span></div >
 
     if (!data) return null
 
-    
+
     return (
-
         <CategoryItem {...data} showDescription />
-
     )
 
 }

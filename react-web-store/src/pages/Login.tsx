@@ -30,6 +30,8 @@ export default function Login() {
                 email: data.email,
                 password: data.password,
             })
+            
+            error && alert(error.message)
             navigate('/')
         } catch (error) {
             alert(error)

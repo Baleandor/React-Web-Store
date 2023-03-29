@@ -4,7 +4,6 @@ import { supabaseClient } from "../../supabase/client";
 
 
 type AddToWishlistProps = {
-
     description: string,
     imgUrl: string,
     title: string,
@@ -16,10 +15,10 @@ export default function AddToWishlist({ description, imgUrl, title, price }: Add
 
     const navigate = useNavigate()
 
-
-
     const handleAddToWishlist = async () => {
-        const { data } = await supabaseClient.auth.getSession()
+        const { data, error } = await supabaseClient.auth.getSession()
+
+        error && alert(error.message)
 
         if (!data.session?.user) {
             navigate('/login')
@@ -29,13 +28,12 @@ export default function AddToWishlist({ description, imgUrl, title, price }: Add
                 .insert([
                     { title: title, price: price, description: description, imageurl: imgUrl, ownerid: data?.session?.user.id },
                 ])
+                alert("Item successfully added to Wishlist!")
         }
     }
 
 
     return (
-
         <button className="p-1 border border-lime-400 text-cyan-400 rounded cursor-pointer" onClick={handleAddToWishlist}>Wishlist</button>
-
     )
 }

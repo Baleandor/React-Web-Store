@@ -17,7 +17,9 @@ export default function AddToCart({ id }: AddToCartProps) {
 
     const handleCart = async () => {
 
-        const { data } = await supabaseClient.auth.getSession()
+        const { data, error } = await supabaseClient.auth.getSession()
+
+        error && alert(error.message)
 
         if (data?.session?.user) {
             increaseItemCartQuantity(id)

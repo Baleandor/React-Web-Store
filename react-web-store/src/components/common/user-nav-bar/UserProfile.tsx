@@ -4,9 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { supabaseClient } from "../../../supabase/client";
 import UserProfileDropDown from "./UserProfileDropDown";
 
+
+
 const { data, error } = await supabaseClient.auth.getSession()
 
 export default function UserProfile() {
+
+    error && alert(error.message)
 
     const [open, setOpen] = useState(false)
 
@@ -36,6 +40,7 @@ export default function UserProfile() {
             authListener.subscription.unsubscribe();
         }
     }, [])
+
 
     return (
         <>

@@ -13,7 +13,9 @@ type ItemInCartProps = {
 
 export default function ItemInCart({ id, quantity }: ItemInCartProps) {
 
-    const { data, isError, error, isLoading } = useQuery<CategoryItemDetailsType, Error>(["category", id], () => getCategoryItem(id))
+    const { data, error } = useQuery<CategoryItemDetailsType, Error>(["category", id], () => getCategoryItem(id))
+
+    error && alert(error.message)
 
     const { increaseItemCartQuantity, decreaseItemCartQuantity, removeFromCart, setItemPrice } = useCart()
 

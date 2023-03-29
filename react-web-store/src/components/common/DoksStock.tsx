@@ -20,10 +20,8 @@ export default function DoksStock({  imgUrl, title, price, description }: StockP
             <div className="text-lime-400">${price}</div>
             <div className="inline-block">
                 <AddToWishlist  imgUrl={imgUrl} title={title}  price={price}  description={description}  />
-
             </div>
             <div className="text-lime-400">{description}</div>
-
         </div>
     )
 }

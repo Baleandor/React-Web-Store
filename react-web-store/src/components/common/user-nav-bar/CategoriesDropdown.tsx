@@ -3,9 +3,11 @@ import { useQuery } from '@tanstack/react-query'
 import { getCategories } from "../../../api/utilities";
 import { useNavigate } from "react-router-dom";
 
+
 type CategoriesDropdownPropsType = {
     handleClick: () => void
 }
+
 
 export default function CategoriesDropdown({ handleClick }: CategoriesDropdownPropsType) {
 
@@ -15,7 +17,6 @@ export default function CategoriesDropdown({ handleClick }: CategoriesDropdownPr
 
     if (isLoading || isError) return <div className="text-lime-200 bg-lime-900 w-24 rounded absolute top-10 left-0 p-1"><span >{isLoading ? "Loading..." : `Error: ${error.message}`}</span></div>
     
-
     if (!categories) return null
 
 
@@ -30,8 +31,5 @@ export default function CategoriesDropdown({ handleClick }: CategoriesDropdownPr
                 })}
             </ul>
         </div>
-
-
     )
-
 }

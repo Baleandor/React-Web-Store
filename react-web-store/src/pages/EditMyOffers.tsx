@@ -31,16 +31,18 @@ export default function EditMyOffers() {
     const { register, handleSubmit, formState: { errors }, setValue } = useForm<IFormInputs>({ resolver: zodResolver(FormSchema), mode: "onSubmit" });
 
     const onSubmit: SubmitHandler<IFormInputs> = async (data) => {
-        console.log(data)
         try {
-            const { data: info, error } = await supabaseClient
+            const { error } = await supabaseClient
                 .from('offers')
                 .update([
                     { title: data.productName, price: data.productPrice, description: data.productDescription, imageurl: data.productImageUrl, },
                 ])
                 .eq('id', params.itemid)
 
+            error && alert(error.message)
+
             navigate('/my-offers')
+            alert("Item successfully edited!")
         } catch (error) {
             alert(error)
         }
@@ -48,7 +50,7 @@ export default function EditMyOffers() {
 
     const errorMessage = errors.productName?.message || errors.productPrice?.message || errors.productDescription?.message || errors.productImageUrl?.message
 
-    const { data: itemData, isError, error, isLoading, isFetching, isFetched } = useQuery({
+    const { error } = useQuery({
         queryKey: ["edit-offer"],
         queryFn: () => {
             return supabaseClient
@@ -64,6 +66,8 @@ export default function EditMyOffers() {
 
         },
     })
+
+    error && alert(error)
 
 
     return (

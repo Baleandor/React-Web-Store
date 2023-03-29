@@ -8,10 +8,12 @@ import { CategoryItemDetailsType } from "../types";
 
 
 export default function CategoryPage() {
-    
+
     const { category_id } = useParams()
 
-    const { data, isError, error, isLoading } = useQuery<CategoryItemDetailsType[], Error>(["category", category_id], () => getCategory(category_id))
+    const { data, error } = useQuery<CategoryItemDetailsType[], Error>(["category", category_id], () => getCategory(category_id))
+
+    error && alert(error.message)
 
     const showDescription = false
 
@@ -24,7 +26,5 @@ export default function CategoryPage() {
                 )
             })}
         </div>
-
-
     )
 }

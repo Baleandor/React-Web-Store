@@ -10,8 +10,9 @@ import { debounce } from "lodash";
 
 export default function SearchBar() {
 
-    const { data, isError, error, isLoading } = useQuery<CategoryItemDetailsType[], Error>(["all-items"], getAllItems)
+    const { data, isError, error } = useQuery<CategoryItemDetailsType[], Error>(["all-items"], getAllItems)
 
+    error && alert(error.message)
 
     const [searchParams, setSearchParams] = useState('')
 
@@ -36,7 +37,6 @@ export default function SearchBar() {
                 <SearchIcon searchParams={searchParams} />
                 {searchParams.length > 0 && <SearchBarAutofillDropdown data={autofillResult} />}
             </div>
-
         </div>
     )
 }

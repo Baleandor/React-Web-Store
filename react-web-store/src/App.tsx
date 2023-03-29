@@ -14,6 +14,7 @@ import MyOffers from "./pages/MyOffers"
 import SearchResult from "./pages/SearchResult"
 import MyWishlist from "./pages/MyWishlist"
 import EditMyOffers from "./pages/EditMyOffers"
+import NotFound from "./pages/NotFound"
 
 
 const client = new QueryClient()
@@ -56,6 +57,7 @@ export default function App() {
         <Route path="my-offers" element={<MyOffers />} />
         <Route path="my-wishlist" element={<MyWishlist />} />
         <Route path="edit/:itemid" element={<EditMyOffers />} />
+        <Route path="*" element={<NotFound />} errorElement={<NotFound />} />
       </Route >
     )
   )

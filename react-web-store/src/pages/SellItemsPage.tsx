@@ -38,7 +38,9 @@ export default function SellItemsPage() {
                     { title: data.productName, price: data.productPrice, description: data.productDescription, imageurl: data.productImageUrl, ownerid: user?.id },
                 ])
 
+            error && alert(error)
             navigate('/my-offers')
+            alert("Item successfully placed for sale!")
         } catch (error) {
             alert(error)
         }

@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { supabaseClient } from "../../../supabase/client";
 
+
 type UserProfileDropDownType = {
     handleClick: () => void
 }
@@ -12,7 +13,10 @@ export default function UserProfileDropDown({ handleClick }: UserProfileDropDown
     const navigate = useNavigate()
 
     const logout = async () => {
-        await supabaseClient.auth.signOut()
+        
+        const { error } = await supabaseClient.auth.signOut()
+
+        error && alert(error.message)
     }
 
 
