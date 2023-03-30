@@ -45,6 +45,7 @@ async function onSubmit(data:RegisterInputs){
 
     if(response!= null) {
         navigate('/')
+        alert("Account created successfully!")
     }
 }
 
