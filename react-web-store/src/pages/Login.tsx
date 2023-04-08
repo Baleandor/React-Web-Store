@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod'
 
 
-const LoginSchema = z.object({
+const loginSchema = z.object({
     email: z.string().email("You must provide a valid email!"),
     password: z.string()
 })
@@ -21,7 +21,7 @@ export default function Login() {
 
     const navigate = useNavigate()
 
-    const { register, handleSubmit, formState: { errors } } = useForm<LoginInputs>({ resolver: zodResolver(LoginSchema), mode: "onSubmit" });
+    const { register, handleSubmit, formState: { errors } } = useForm<LoginInputs>({ resolver: zodResolver(loginSchema), mode: "onSubmit" });
 
     async function onSubmit(data: LoginInputs) {
 

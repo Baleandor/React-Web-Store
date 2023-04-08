@@ -6,7 +6,7 @@ import { supabaseClient } from "../supabase/client";
 import { useNavigate } from "react-router-dom";
 
 
-const FormSchema = z.object({
+const formSchema = z.object({
     productName: z.string().min(4, "Product name must be at least 4 characters long!"),
     productPrice: z.number().min(1, "Product price must be at least $1 !").int(),
     productDescription: z.string().min(10, "Product description must be at least 10 characters long!").max(25, "Product description cannot be more than 25 characters long!"),
@@ -25,7 +25,7 @@ export default function SellItemsPage() {
 
     const navigate = useNavigate()
 
-    const { register, handleSubmit, formState: { errors } } = useForm<IFormInputs>({ resolver: zodResolver(FormSchema), mode: "onSubmit" });
+    const { register, handleSubmit, formState: { errors } } = useForm<IFormInputs>({ resolver: zodResolver(formSchema), mode: "onSubmit" });
 
     const onSubmit: SubmitHandler<IFormInputs> = async (data) => {
         try {

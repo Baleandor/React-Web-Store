@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getCategoryItem } from "../../api/utilities";
+import { getCategoryItem } from "../../utils/api";
 import { useCart } from "../../hooks/CartContext";
 import { CategoryItemDetailsType } from "../../types";
 

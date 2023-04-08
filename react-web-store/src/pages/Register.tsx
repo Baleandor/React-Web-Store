@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { supabaseClient } from "../supabase/client";
 
 
-const RegisterSchema = z.object({
+const registerSchema = z.object({
     email: z.string().email("You must provide a valid email!"),
     username: z.string().min(4, "Username must be at least 4 characters long!"),
     password: z.string().min(6, "Password must be at least 6 characters long!"),
@@ -28,7 +28,7 @@ export default function Register() {
 
 const navigate = useNavigate()
 
-const { register, handleSubmit, formState: { errors } } = useForm<RegisterInputs>({ resolver: zodResolver(RegisterSchema), mode: "onSubmit" });
+const { register, handleSubmit, formState: { errors } } = useForm<RegisterInputs>({ resolver: zodResolver(registerSchema), mode: "onSubmit" });
 
 async function onSubmit(data:RegisterInputs){
     const response = await supabaseClient.auth.signUp({

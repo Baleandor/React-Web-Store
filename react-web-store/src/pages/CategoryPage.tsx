@@ -1,7 +1,7 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-import { getCategory } from "../api/utilities";
+import { getCategory } from "../utils/api";
 import CategoryItem from "../components/common/CategoryItem";
 import { CategoryItemDetailsType } from "../types";
 

@@ -3,7 +3,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import OfferItem from "../components/common/OfferItem";
 import { supabaseClient } from "../supabase/client";
-import { OfferItemType } from "../types";
+;
 
 
 const {
@@ -11,10 +11,10 @@ const {
 } = await supabaseClient.auth.getUser()
 
 
-let { data: offers } = await supabaseClient
-    .from('wishlist')
-    .select('*')
-    .eq('ownerid', user?.id)
+// let { data: offers } = await supabaseClient
+//     .from('wishlist')
+//     .select('*')
+//     .eq('ownerid', user?.id)
 
 
 // type offer = {

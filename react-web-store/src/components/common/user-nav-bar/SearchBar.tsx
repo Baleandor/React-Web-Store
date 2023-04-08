@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
-import { getAllItems } from "../../../api/utilities";
+import { getAllItems } from "../../../utils/api";
 import { CategoryItemDetailsType } from "../../../types";
 import Categories from "./Categories";
 import SearchBarAutofillDropdown from "./SearchBarAutofillDropdown";
