@@ -1,7 +1,7 @@
 import React from "react"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { createBrowserRouter, createRoutesFromElements, Outlet, Route, RouterProvider } from "react-router-dom"
-import UserNavBar from "./components/common/user-nav-bar/UserNavBar"
+import UserNavBar from "./components/common/UserNavBar/UserNavBar"
 import CartPage from "./pages/CartPage"
 import CategoryDetailsPage from "./pages/CategoryDetailsPage"
 import CategoryPage from "./pages/CategoryPage"
@@ -11,10 +11,11 @@ import { CartProvider } from "./hooks/CartContext"
 import Register from "./pages/Register"
 import Login from "./pages/Login"
 import MyOffers from "./pages/MyOffers"
-import SearchResult from "./pages/SearchResult"
+import SearchResult from "./pages/SearchResults"
 import MyWishlist from "./pages/MyWishlist"
 import EditMyOffers from "./pages/EditMyOffers"
 import NotFound from "./pages/NotFound"
+import { ROUTE_PATH } from "./utils/urls"
 
 
 const client = new QueryClient()
@@ -44,20 +45,20 @@ export default function App() {
 
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route path='/' element={<Root />}>
+      <Route path={ROUTE_PATH.HOME} element={<Root />}>
         <Route index element={<Home />} />
-        <Route path='sell-items' element={<SellItemsPage />} />
-        <Route path="cart" element={<CartPage />} />
-        <Route path="categories/:category_id" element={<CategoryPage />} />
-        <Route path="categories/:category_id/:item_id" element={<CategoryDetailsPage />} />
-        <Route path="register" element={<Register />} />
-        <Route path="login" element={<Login />} />
-        <Route path="search/:item_id" element={<CategoryDetailsPage />} />
-        <Route path="search-result/:searchParams" element={<SearchResult />} />
-        <Route path="my-offers" element={<MyOffers />} />
-        <Route path="my-wishlist" element={<MyWishlist />} />
-        <Route path="edit/:itemid" element={<EditMyOffers />} />
-        <Route path="*" element={<NotFound />} errorElement={<NotFound />} />
+        <Route path={ROUTE_PATH.SELL_ITEMS} element={<SellItemsPage />} />
+        <Route path={ROUTE_PATH.CART} element={<CartPage />} />
+        <Route path={ROUTE_PATH.CATEGORY_PAGE} element={<CategoryPage />} />
+        <Route path={ROUTE_PATH.CATEGORY_ITEM_DETAILS} element={<CategoryDetailsPage />} />
+        <Route path={ROUTE_PATH.REGISTER} element={<Register />} />
+        <Route path={ROUTE_PATH.LOGIN} element={<Login />} />
+        <Route path={ROUTE_PATH.SEARCH_ITEM_RESULT} element={<CategoryDetailsPage />} />
+        <Route path={ROUTE_PATH.SEARCH_RESULTS} element={<SearchResult />} />
+        <Route path={ROUTE_PATH.MY_OFFERS} element={<MyOffers />} />
+        <Route path={ROUTE_PATH.MY_WISHLIST} element={<MyWishlist />} />
+        <Route path={ROUTE_PATH.EDIT_OFFER} element={<EditMyOffers />} />
+        <Route path={ROUTE_PATH.NOT_FOUND} element={<NotFound />} errorElement={<NotFound />} />
       </Route >
     )
   )

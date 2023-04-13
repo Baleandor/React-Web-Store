@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { getCategory } from "../utils/api";
 import CategoryItem from "../components/common/CategoryItem";
 import { CategoryItemDetailsType } from "../types";
+import { errorTracker } from "../utils/errorTracker";
 
 
 
@@ -13,7 +14,7 @@ export default function CategoryPage() {
 
     const { data, error } = useQuery<CategoryItemDetailsType[], Error>(["category", category_id], () => getCategory(category_id))
 
-    error && alert(error.message)
+    errorTracker(error)
 
     const showDescription = false
 

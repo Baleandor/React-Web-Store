@@ -7,18 +7,27 @@ export default function Categories() {
 
     const [showCategories, setShowCategories] = useState(false)
 
+    const closeDropdown = () => {
+        setShowCategories(false)
+    }
+
+    const openDropdown = () => {
+        setShowCategories(true)
+    }
+
+
     const handleToggleDropdown = () => {
         setShowCategories(!showCategories)
     }
+
+    
     return (
-        <>
+        <div>
             <div onClick={handleToggleDropdown} className="cursor-pointer p-0.5">
                 <div className="text-cyan-400">Categories</div>
             </div>
 
-            {showCategories && <CategoriesDropdown handleClick={handleToggleDropdown} />}
-        </>
-
-
+            {showCategories && <CategoriesDropdown closeDropdown={closeDropdown} />}
+        </div>
     )
 }

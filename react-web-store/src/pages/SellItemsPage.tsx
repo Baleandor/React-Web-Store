@@ -4,6 +4,8 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod'
 import { supabaseClient } from "../supabase/client";
 import { useNavigate } from "react-router-dom";
+import ShrekErrorBox from "../components/common/ShrekErrorBox";
+import { ROUTE_PATH } from "../utils/urls";
 
 
 const formSchema = z.object({
@@ -39,7 +41,7 @@ export default function SellItemsPage() {
                 ])
 
             error && alert(error)
-            navigate('/my-offers')
+            navigate(ROUTE_PATH.MY_OFFERS)
             alert("Item successfully placed for sale!")
         } catch (error) {
             alert(error)
@@ -50,7 +52,7 @@ export default function SellItemsPage() {
 
 
     return (
-        <>
+        <div>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="m-4">
                     <div className="mr-2 text-lime-400">Product Name</div>
@@ -74,17 +76,8 @@ export default function SellItemsPage() {
             </form>
 
             {!!errorMessage &&
-                <div className="w-auto fixed right-10 bottom-0">
-                    <div className="p-1 text-lime-200 bg-lime-900 rounded text-2xl">
-                        <p>
-                            {errorMessage}
-                        </p>
-                    </div>
-                    <div>
-                        <img src="/images/KRUMPIN.png" className="mt-5"></img>
-                    </div>
-                </div>
+                <ShrekErrorBox errorMessage={errorMessage} />
             }
-        </>
+        </div>
     )
 }

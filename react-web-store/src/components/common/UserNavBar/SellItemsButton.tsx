@@ -1,9 +1,10 @@
 import React from "react";
 import {  useNavigate } from "react-router-dom";
 import { supabaseClient } from "../../../supabase/client";
+import { ROUTE_PATH } from "../../../utils/urls";
 
 
-export default function SellItems() {
+export default function SellItemsButton() {
 
     const navigate = useNavigate()
 
@@ -14,9 +15,9 @@ export default function SellItems() {
         error && alert(error.message)
 
         if (data?.session?.user) {
-            navigate('/sell-items')
+            navigate(ROUTE_PATH.SELL_ITEMS)
         } else {
-            navigate('/login')
+            navigate(ROUTE_PATH.LOGIN)
         }
     }
 

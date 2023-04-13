@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { supabaseClient } from "../../supabase/client";
+import { ROUTE_PATH } from "../../utils/urls";
 
 
 type AddToWishlistProps = {
@@ -21,7 +22,7 @@ export default function AddToWishlist({ description, imgUrl, title, price }: Add
         error && alert(error.message)
 
         if (!data.session?.user) {
-            navigate('/login')
+            navigate(ROUTE_PATH.LOGIN)
         } else {
             await supabaseClient
                 .from('wishlist')

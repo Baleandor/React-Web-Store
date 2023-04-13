@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../../hooks/CartContext";
 import { supabaseClient } from "../../supabase/client";
+import { ROUTE_PATH } from "../../utils/urls";
 
 
 type AddToCartProps = {
@@ -24,7 +25,7 @@ export default function AddToCart({ id }: AddToCartProps) {
         if (data?.session?.user) {
             increaseItemCartQuantity(id)
         } else {
-            navigate('/login')
+            navigate(ROUTE_PATH.LOGIN)
         }
     }
 

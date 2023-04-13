@@ -3,6 +3,8 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import OfferItem from "../components/common/OfferItem";
 import { supabaseClient } from "../supabase/client";
+import LoadingBox from "../components/common/LoadingBox";
+import { ROUTE_PATH } from "../utils/urls";
 ;
 
 
@@ -26,6 +28,7 @@ const {
 
 export default function MyWishlist() {
 
+    const navigate = useNavigate()
 
     const { data: info, isFetching, error: screwUp } = useQuery(['user'], () => supabaseClient.auth.getUser())
 
@@ -33,7 +36,7 @@ export default function MyWishlist() {
 
     const userId = info?.data.user?.id
 
-    const { data, isError, error, isLoading } = useQuery({
+    const { data, error } = useQuery({
         queryKey: ["wishlist"],
         queryFn: () => {
             return supabaseClient
@@ -55,16 +58,15 @@ export default function MyWishlist() {
             .eq('id', id)
     }
 
-    const navigate = useNavigate()
 
     if (!userId && !isFetching) {
-        navigate('/login')
+        navigate(ROUTE_PATH.LOGIN)
     }
 
 
     return (
         <div className="p-2 m-2 text-lime-300 flex flex-col text-center">
-            {isFetching && <div>Loading...</div>}
+            {isFetching && <LoadingBox />}
             {
                 offers?.map((item): any => {
                     return (

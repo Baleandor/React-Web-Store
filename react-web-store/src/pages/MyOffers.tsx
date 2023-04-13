@@ -3,6 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { supabaseClient } from "../supabase/client";
 import OfferItem from "../components/common/OfferItem";
+import LoadingBox from "../components/common/LoadingBox";
+import { ROUTE_PATH } from "../utils/urls";
 
 
 export default function MyOffers() {
@@ -38,13 +40,13 @@ export default function MyOffers() {
     const navigate = useNavigate()
 
     if (!userId && !isFetching) {
-        navigate('/login')
+        navigate(ROUTE_PATH.LOGIN)
     }
 
 
     return (
         <div className="p-2 m-2 text-lime-300 flex flex-col text-center">
-            {isFetching && <div>Loading...</div>}
+            {isFetching && <LoadingBox />}
             {
                 offers?.map((item): any => {
                     return (

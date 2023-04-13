@@ -4,6 +4,8 @@ import { z } from "zod";
 import { supabaseClient } from "../supabase/client";
 import { useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod'
+import ShrekErrorBox from "../components/common/ShrekErrorBox";
+import { ROUTE_PATH } from "../utils/urls";
 
 
 const loginSchema = z.object({
@@ -11,7 +13,7 @@ const loginSchema = z.object({
     password: z.string()
 })
 
-type LoginInputs = {
+type LoginData = {
     email: string,
     password: string
 }
@@ -21,18 +23,18 @@ export default function Login() {
 
     const navigate = useNavigate()
 
-    const { register, handleSubmit, formState: { errors } } = useForm<LoginInputs>({ resolver: zodResolver(loginSchema), mode: "onSubmit" });
+    const { register, handleSubmit, formState: { errors } } = useForm<LoginData>({ resolver: zodResolver(loginSchema), mode: "onSubmit" });
 
-    async function onSubmit(data: LoginInputs) {
+    async function onSubmit(data: LoginData) {
 
         try {
             const { data: loginData, error } = await supabaseClient.auth.signInWithPassword({
                 email: data.email,
                 password: data.password,
             })
-            
+
             error && alert(error.message)
-            navigate('/')
+            navigate(ROUTE_PATH.HOME)
         } catch (error) {
             alert(error)
         }
@@ -42,7 +44,7 @@ export default function Login() {
 
 
     return (
-        <>
+        <div>
             <div className="h-56 p-2 rounded border border-lime-800 flex text-center justify-center">
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
                     <div className="mb-3">
@@ -56,23 +58,14 @@ export default function Login() {
                     <button className="p-1 text-cyan-400">Login</button>
                     <div>
                         <span className="p-1 text-lime-400">Don't have an account?</span>
-                        <button type="submit" className="underline text-green-400" onClick={() => navigate("/register")}>Register</button>
+                        <button type="submit" className="underline text-green-400" onClick={() => navigate(ROUTE_PATH.REGISTER)}>Register</button>
                     </div>
                 </form>
             </div>
 
             {!!errorMessage &&
-                <div className="w-auto fixed right-10 bottom-0">
-                    <div className="p-1 text-lime-200 bg-lime-900 rounded text-2xl">
-                        <p>
-                            {errorMessage}
-                        </p>
-                    </div>
-                    <div>
-                        <img src="/images/KRUMPIN.png" className="mt-5"></img>
-                    </div>
-                </div>
+                <ShrekErrorBox errorMessage={errorMessage} />
             }
-        </>
+        </div>
     )
 }

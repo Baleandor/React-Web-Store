@@ -5,6 +5,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useQuery } from "@tanstack/react-query";
+import ShrekErrorBox from "../components/common/ShrekErrorBox";
+import { ROUTE_PATH } from "../utils/urls";
 
 
 const formSchema = z.object({
@@ -41,7 +43,7 @@ export default function EditMyOffers() {
 
             error && alert(error.message)
 
-            navigate('/my-offers')
+            navigate(ROUTE_PATH.MY_OFFERS)
             alert("Item successfully edited!")
         } catch (error) {
             alert(error)
@@ -52,18 +54,19 @@ export default function EditMyOffers() {
 
     const { error } = useQuery({
         queryKey: ["edit-offer"],
-        queryFn: () => {
-            return supabaseClient
+        queryFn: async () => {
+            return await supabaseClient
                 .from('offers')
                 .select('*')
                 .eq('id', params.itemid)
         }, enabled: !!params.itemid, onSuccess(response) {
-            const item = response.data[0]
-            setValue("productName", item?.title)
-            setValue("productPrice", item?.price)
-            setValue("productDescription", item?.description)
-            setValue("productImageUrl", item?.imageurl)
-
+            if (response.data) {
+                const item = response.data[0]
+                setValue("productName", item?.title)
+                setValue("productPrice", item?.price)
+                setValue("productDescription", item?.description)
+                setValue("productImageUrl", item?.imageurl)
+            }
         },
     })
 
@@ -72,7 +75,7 @@ export default function EditMyOffers() {
 
     return (
 
-        <>
+        <div>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="m-4">
                     <div className="mr-2 text-lime-400">Product Name</div>
@@ -96,17 +99,8 @@ export default function EditMyOffers() {
             </form>
 
             {!!errorMessage &&
-                <div className="w-auto fixed right-10 bottom-0">
-                    <div className="p-1 text-lime-200 bg-lime-900 rounded text-2xl">
-                        <p>
-                            {errorMessage}
-                        </p>
-                    </div>
-                    <div>
-                        <img src="/images/KRUMPIN.png" className="mt-5"></img>
-                    </div>
-                </div>
+                <ShrekErrorBox errorMessage={errorMessage} />
             }
-        </>
+        </div>
     )
 }

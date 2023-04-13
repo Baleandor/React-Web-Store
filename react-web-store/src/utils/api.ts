@@ -7,7 +7,7 @@ export const getCategories = (): Promise<string[]> => axios.get(`${fakestore}/ca
 
 export const getCategory = (category_id: string | undefined): Promise<CategoryItemDetailsType[]> => axios.get(`${fakestore}/category/${category_id}`).then((response) => response.data)
 
-export const getCategoryItem = (item_id: string | number | undefined): Promise<CategoryItemDetailsType> => axios.get(`${fakestore}/products/${item_id}`).then((response) => response.data)
+export const getCategoryItem = (item_id: string | number | undefined): Promise<CategoryItemDetailsType> => axios.get(`${fakestore}/${item_id}`).then((response) => response.data)
 
 export const getAllItems = (): Promise<CategoryItemDetailsType[]> => axios.get(`${fakestore}`).then((response) => response.data)
 

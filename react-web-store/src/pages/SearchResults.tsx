@@ -4,18 +4,17 @@ import { useParams } from "react-router-dom";
 import { getAllItems } from "../utils/api";
 import CategoryItem from "../components/common/CategoryItem";
 import { CategoryItemDetailsType } from "../types";
+import { errorTracker } from "../utils/errorTracker";
 
 
 export default function SearchResult() {
 
     const { searchParams } = useParams()
 
-    const showDescription = true
-
     const { data, error, isLoading } = useQuery<CategoryItemDetailsType[], Error>(["all-items"], getAllItems)
 
-    error && alert(error)
-    
+    errorTracker(error)
+
     const autofillResult = data?.filter((result) => {
         if (searchParams) {
             return result.title.toLocaleLowerCase().includes(searchParams)
@@ -28,13 +27,12 @@ export default function SearchResult() {
 
 
     return (
-        <>
+        <div>
             {autofillResult?.map((item) => {
                 return (
-                    <CategoryItem key={item.id} {...item} showDescription={showDescription} />
+                    <CategoryItem key={item.id} {...item} showDescription />
                 )
             })}
-            
-        </>
+        </div>
     )
 }

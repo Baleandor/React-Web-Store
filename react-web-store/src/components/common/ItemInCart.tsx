@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getCategoryItem } from "../../utils/api";
 import { useCart } from "../../hooks/CartContext";
 import { CategoryItemDetailsType } from "../../types";
+import { errorTracker } from "../../utils/errorTracker";
 
 
 type ItemInCartProps = {
@@ -15,7 +16,7 @@ export default function ItemInCart({ id, quantity }: ItemInCartProps) {
 
     const { data, error } = useQuery<CategoryItemDetailsType, Error>(["category", id], () => getCategoryItem(id))
 
-    error && alert(error.message)
+    errorTracker(error)
 
     const { increaseItemCartQuantity, decreaseItemCartQuantity, removeFromCart, setItemPrice } = useCart()
 

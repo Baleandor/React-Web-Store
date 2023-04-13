@@ -1,8 +1,11 @@
 import React, { useEffect } from "react";
+import { User } from "@supabase/supabase-js";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabaseClient } from "../../../supabase/client";
 import UserProfileDropDown from "./UserProfileDropDown";
+import { ROUTE_PATH } from "../../../utils/urls";
+import { errorTracker } from "../../../utils/errorTracker";
 
 
 
@@ -10,26 +13,32 @@ const { data, error } = await supabaseClient.auth.getSession()
 
 export default function UserProfile() {
 
-    error && alert(error.message)
-
-    const [open, setOpen] = useState(false)
-
-    const handleProfileToggle = () => {
-        setOpen(!open)
-    }
-
     const navigate = useNavigate()
 
-    const [user, setUser] = useState<any>(null);
+    const [user, setUser] = useState<User | null>(null);
+    
+    const [open, setOpen] = useState(false)
+    
+    const closeProfileDropdown = () => {
+        setOpen(false)
+    }
+    
+    const openProfileDropdown = () => {
+        setOpen(true)
+    }
+    
+    
+    errorTracker(error)
+
 
     useEffect(() => {
 
-        setUser(data?.session?.user)
+        setUser(data?.session?.user || null)
 
         const { data: authListener } = supabaseClient.auth.onAuthStateChange(
             (event, session) => {
                 if (session?.user) {
-                    setUser(data?.session?.user)
+                    setUser(session?.user || null)
                 } else {
                     setUser(null)
                 }
@@ -43,16 +52,18 @@ export default function UserProfile() {
 
 
     return (
-        <>
+        <div>
             <div className="inline-flex relative text-cyan-400 w-28 h-14 mx-1 p-1 justify-center align-center top-4 text-center cursor-pointer hover:border-lime-400 hover:border hover:rounded" >
                 <div className="p1 flex">
                     {user ?
-                        <div className="self-center" onClick={() => setOpen(!open)}>Hello, {data?.session?.user.user_metadata.username}!</div>
-                        : <span className="self-center text-xl" onClick={() => { navigate("/register") }}>Register</span>}
+                        <div className="self-center" onClick={openProfileDropdown}>Hello, {data?.session?.user.user_metadata.username}!</div>
+                        : <span className="self-center text-xl" onClick={() => { navigate(ROUTE_PATH.REGISTER) }}>Register</span>}
                 </div>
             </div>
-            {open && <UserProfileDropDown handleClick={handleProfileToggle} />}
-        </>
+            {open && <UserProfileDropDown closeProfileDropdown={closeProfileDropdown} />}
+        </div>
+
+
     )
 }
 

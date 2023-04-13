@@ -1,7 +1,7 @@
 import React from "react";
 import StoreLogo from "../StoreLogo";
 import SearchBar from "./SearchBar";
-import SellItems from "./SellItems";
+import SellItems from "./SellItemsButton";
 import ShoppingCart from "./ShoppingCart";
 import UserProfile from "./UserProfile";
 
