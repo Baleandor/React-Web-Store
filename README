@@ -1,0 +1,7 @@
+This is an ebay clone.
+ Users can login, register, and logout.
+ Users can save items to their favorites.
+ Users can add and remove items to the cart.
+ Users can upload their own items to sell.
+ Users can search for items via the search bar.
+The cart itself has the expected functionality. It can add and remove items by 1, remove a single count of an item, remove all items of the same name, and clear the cart entirely.
