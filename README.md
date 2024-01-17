@@ -1,5 +1,7 @@
 # React Web Store Documentation
 
+# DISCLAIMER! If the app does not connect to the supabase backend, it means the free instance of that database has been frozen and I need to unfreeze it manually. Please contact me via email so that I can do so when needed. Thanks!
+
 ## Summary
 
 The React Web Store is an online marketplace inspired by eBay, providing users with a platform to buy and sell items. This application offers a wide range of features to enhance user experience, including user authentication, favorites management, cart functionality, item selling, and a robust search system. Built using React, the app utilizes key libraries such as Supabase, React Query, Axios, and more to create a seamless and efficient online shopping environment.
