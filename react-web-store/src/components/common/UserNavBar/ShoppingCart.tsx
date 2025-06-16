@@ -12,8 +12,8 @@ export default function ShoppingCart() {
 
 
     return (
-        <div className="w-40 h-20">
-            <img src="/images/shopping-cart.png" className=" w-24 h-12 cursor-pointer relative top-4" onClick={() => navigate(ROUTE_PATH.CART)}></img>
+        <div className="w-20 h-20">
+            <img src="/images/shopping-cart.png" className=" w-20 h-12 cursor-pointer relative top-4" onClick={() => navigate(ROUTE_PATH.CART)}></img>
             {cartQuantity > 0 && <div className="flex h-5 w-5 absolute top-11 right-20 p-3 items-center justify-center bg-green-900 text-red-400 rounded-full">{cartQuantity}</div>}
         </div>
     )

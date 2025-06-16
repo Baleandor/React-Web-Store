@@ -9,7 +9,7 @@ export default function StoreLogo() {
     return (
         <Link to={ROUTE_PATH.HOME}>
             <div className="cursor-pointer">
-                <img src="/images/goffrocker.png" className="w-44 h-20"></img>
+                <img src="/images/goffrocker.png" className="w-40 h-20"></img>
             </div>
         </Link>
     )

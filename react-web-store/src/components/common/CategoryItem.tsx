@@ -26,7 +26,7 @@ export default function CategoryItem({ id, title, price, description, image, sho
             {showDescription && <div><p className="bg-green-800 p-1 rounded text-lime-300">{description}</p> </div>}
             <div className="p-1 text-lime-300 space-x-1">
                 <div className="inline-flex p-1 h-8 bg-green-800 rounded">{price}$</div>
-                {!showDescription && <button className="p-1 rounded border border-lime-400  text-cyan-400  cursor-pointer" onClick={() => {
+                {!showDescription && <button className="p-1 rounded border border-lime-400  text-cyan-200 hover:text-cyan-100  cursor-pointer" onClick={() => {
                     navigate(`/categories/${categoryId}/${id}`)
                 }}>Details</button>}
                 <AddToWishlist title={title} price={price} description={description} imgUrl={image} />

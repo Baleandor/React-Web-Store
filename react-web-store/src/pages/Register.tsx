@@ -59,25 +59,25 @@ export default function Register() {
             <div className="h-80 p-2 rounded border border-lime-800 flex text-center justify-center">
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col justify-between">
                     <div>
-                        <div className="p-1 text-lime-400">Email</div>
+                        <div className="p-1 text-lime-100">Email</div>
                         <input {...register("email")} type={"email"} className=" bg-lime-800 outline-lime-300"></input>
                     </div>
                     <div>
-                        <div className="p-1 text-lime-400">Username</div>
+                        <div className="p-1 text-lime-100">Username</div>
                         <input {...register("username")} className=" bg-lime-800 outline-lime-300"></input>
                     </div>
                     <div>
-                        <div className="p-1 text-lime-400">Password</div>
+                        <div className="p-1 text-lime-100">Password</div>
                         <input {...register("password")} type={"password"} className=" bg-lime-800 outline-lime-300"></input>
                     </div>
                     <div>
-                        <div className="p-1 text-lime-400">Confirm Password</div>
+                        <div className="p-1 text-lime-100">Confirm Password</div>
                         <input {...register("repass")} type={"password"} className=" bg-lime-800 outline-lime-300"></input>
                     </div>
-                    <button className="p-1 text-cyan-400">Register</button>
+                    <button className="p-1 text-cyan-200 hover:text-cyan-100">Register</button>
                     <div className="p-1">
-                        <span className="p-1 text-lime-400">Already have an account?</span>
-                        <button type="submit" className="underline text-green-400" onClick={() => navigate(ROUTE_PATH.LOGIN)}>Login</button>
+                        <span className="p-1 text-lime-100">Already have an account?</span>
+                        <button type="submit" className="underline text-green-200 hover:text-green-100" onClick={() => navigate(ROUTE_PATH.LOGIN)}>Login</button>
                     </div>
                 </form>
             </div>

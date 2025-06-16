@@ -52,27 +52,23 @@ export default function SellItemsPage() {
 
 
     return (
-        <div>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="m-4">
-                    <div className="mr-2 text-lime-400">Product Name</div>
-                    <input {...register("productName")} className="mt-1 rounded bg-lime-800 outline-lime-300" />
-                </div>
-                <div className="m-4">
-                    <div className="mr-2 text-lime-400">Product Price</div>
-                    <input type="number" {...register("productPrice", { valueAsNumber: true })} className="mt-1 rounded bg-lime-800 outline-lime-300"></input>
-                </div>
-                <div className="m-4">
-                    <div className="mr-2 align-top text-lime-400">Product Description</div>
+        <div className="flex flex-col items-center">
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
+                <div className="mr-2 text-lime-100">Product Name</div>
+                <input {...register("productName")} className="mt-1 rounded bg-lime-800 outline-lime-300" />
 
-                    <textarea {...register("productDescription")} className="h-60 w-60 mt-1 rounded bg-lime-800 outline-lime-300 text-lime-50"></textarea>
-                </div>
-                <div className="m-4">
-                    <div className="mr-2 text-lime-400">Product Image URL</div>
+                <div className="mr-2 text-lime-100">Product Price</div>
+                <input type="number" {...register("productPrice", { valueAsNumber: true })} className="mt-1 rounded bg-lime-800 outline-lime-300"></input>
 
-                    <input {...register("productImageUrl")} className="mt-1 rounded bg-lime-800 outline-lime-300"></input>
-                </div>
-                <button type="submit" className="text-cyan-400 w-20 h-7 text-center border border-lime-400 rounded">Submit</button>
+                <div className="mr-2 align-top text-lime-100">Product Description</div>
+
+                <textarea {...register("productDescription")} className="h-60 w-60 mt-1 rounded bg-lime-800 outline-lime-300 text-lime-50"></textarea>
+
+                <div className="mr-2 text-lime-100">Product Image URL</div>
+
+                <input {...register("productImageUrl")} className="mt-1 rounded bg-lime-800 outline-lime-300"></input>
+
+                <button type="submit" className="text-cyan-200 hover:text-cyan-100 w-20 h-7 text-center border border-lime-400 rounded">Submit</button>
             </form>
 
             {!!errorMessage &&

@@ -1,20 +1,20 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-
 type SearchIconProps = {
-    searchParams: string, 
-}
-
+  searchParams: string;
+};
 
 export default function SearchIcon({ searchParams }: SearchIconProps) {
+  const navigate = useNavigate();
 
-const navigate = useNavigate()
-
-
-    return (
-        <div className="inline-flex w-10 h-8 bg-lime-800 justify-center">
-            <img src="/images/search-icon.png" className="w-8 h-8 cursor-pointer" onClick={()=>navigate(`/search-result/${searchParams}`)}></img>
-        </div>
-    )
+  return (
+    <div className="flex bg-lime-800 w-10 h-full justify-center items-center">
+      <img
+        src="/images/search-icon.png"
+        className="w-6 h-6 cursor-pointer"
+        onClick={() => navigate(`/search-result/${searchParams}`)}
+      />
+    </div>
+  );
 }

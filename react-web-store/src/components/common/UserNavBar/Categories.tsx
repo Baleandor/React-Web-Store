@@ -24,7 +24,7 @@ export default function Categories() {
     return (
         <div>
             <div onClick={handleToggleDropdown} className="cursor-pointer p-0.5">
-                <div className="text-cyan-400">Categories</div>
+                <div className="text-cyan-200 hover:text-cyan-100">Categories</div>
             </div>
 
             {showCategories && <CategoriesDropdown closeDropdown={closeDropdown} />}

@@ -22,7 +22,7 @@ export default function CategoriesDropdown({ closeDropdown }: CategoriesDropdown
 
 
     return (
-        <div className="cursor-pointer relative  bg-lime-900  text-cyan-400 w-24 rounded z-10">
+        <div className="cursor-pointer relative  bg-lime-900  text-cyan-200 w-24 rounded z-10">
             <ul>
                 {categories.map((category) => {
                     return <li key={category} className="p-1 hover:text-lime-100 hover:underline" onClick={() => {

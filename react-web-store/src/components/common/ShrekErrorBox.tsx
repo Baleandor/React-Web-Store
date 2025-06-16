@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 
 type ShrekErrorBoxProps = {
@@ -7,7 +7,28 @@ type ShrekErrorBoxProps = {
 
 
 export default function ShrekErrorBox({ errorMessage }: ShrekErrorBoxProps) {
+    const [isVisible, setIsVisible] = useState(false);
 
+    useEffect(() => {
+        if (errorMessage) {
+            setIsVisible(true);
+            
+            // Set timer to hide the component after 5 seconds
+            const timer = setTimeout(() => {
+                setIsVisible(false);
+            }, 5000);
+
+            // Cleanup timer if component unmounts or errorMessage changes
+            return () => clearTimeout(timer);
+        } else {
+            setIsVisible(false);
+        }
+    }, [errorMessage]);
+
+    // Don't render if not visible or no error message
+    if (!isVisible || !errorMessage) {
+        return null;
+    }
 
     return (
         <div className="w-auto fixed right-10 bottom-0">

@@ -35,6 +35,6 @@ export default function AddToWishlist({ description, imgUrl, title, price }: Add
 
 
     return (
-        <button className="p-1 border border-lime-400 text-cyan-400 rounded cursor-pointer" onClick={handleAddToWishlist}>Wishlist</button>
+        <button className="p-1 border border-lime-400 text-cyan-200 rounded cursor-pointer hover:text-cyan-100" onClick={handleAddToWishlist}>Wishlist</button>
     )
 }

@@ -23,7 +23,7 @@ export default function SellItemsButton() {
 
 
     return (
-        <div className="inline-flex relative text-cyan-400 w-28 h-14 mx-1 p-1 justify-center top-4 cursor-pointer hover:border-lime-400 hover:border hover:rounded">
+        <div className="inline-flex relative text-cyan-200 w-28 h-14 mx-1 p-1 justify-center top-4 cursor-pointer hover:border-lime-400 hover:border hover:rounded hover:text-cyan-100">
             <span className="self-center text-xl" onClick={handleSellItemsClick}>Sell Items</span>
         </div>
     )

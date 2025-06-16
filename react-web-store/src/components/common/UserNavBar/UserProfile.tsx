@@ -53,8 +53,8 @@ export default function UserProfile() {
 
     return (
         <div>
-            <div className="inline-flex relative text-cyan-400 w-28 h-14 mx-1 p-1 justify-center align-center top-4 text-center cursor-pointer hover:border-lime-400 hover:border hover:rounded" >
-                <div className="p1 flex">
+            <div className="inline-flex relative text-cyan-200 hover:text-cyan-100 w-28 h-14 mx-1 p-1 justify-center align-center top-4 text-center cursor-pointer hover:border-lime-400 hover:border hover:rounded" >
+                <div className="flex">
                     {user ?
                         <div className="self-center" onClick={openProfileDropdown}>Hello, {data?.session?.user.user_metadata.username}!</div>
                         : <span className="self-center text-xl" onClick={() => { navigate(ROUTE_PATH.REGISTER) }}>Register</span>}

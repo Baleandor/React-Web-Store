@@ -15,6 +15,8 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
             }
         }
         if (typeof initialValue === 'function') {
+            return initialValue()
+        } else {
             return initialValue
         }
     })

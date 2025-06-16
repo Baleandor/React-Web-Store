@@ -48,17 +48,17 @@ export default function Login() {
             <div className="h-56 p-2 rounded border border-lime-800 flex text-center justify-center">
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
                     <div className="mb-3">
-                        <div className="p-1 text-lime-400 ">Email</div>
+                        <div className="p-1 text-lime-100 ">Email</div>
                         <input {...register("email")} type={"email"} className=" bg-lime-800 outline-lime-300"></input>
                     </div>
                     <div className="mb-3">
-                        <div className="p-1 text-lime-400 ">Password</div>
+                        <div className="p-1 text-lime-100 ">Password</div>
                         <input {...register("password")} type={"password"} className=" bg-lime-800 outline-lime-300"></input>
                     </div>
-                    <button className="p-1 text-cyan-400">Login</button>
+                    <button className="p-1 text-cyan-200 hover:text-cyan-100">Login</button>
                     <div>
-                        <span className="p-1 text-lime-400">Don't have an account?</span>
-                        <button type="submit" className="underline text-green-400" onClick={() => navigate(ROUTE_PATH.REGISTER)}>Register</button>
+                        <span className="p-1 text-lime-100">Don't have an account?</span>
+                        <button type="submit" className="underline text-green-200 hover:text-green-100" onClick={() => navigate(ROUTE_PATH.REGISTER)}>Register</button>
                     </div>
                 </form>
             </div>

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 type OfferItemProps = {
     item: any,
-    handleDelete: (id: string) => Promise<void>
+    handleDelete: (id: string) => void
 }
 
 
@@ -25,8 +25,8 @@ export default function OfferItem({ item, handleDelete }: OfferItemProps) {
                 <div className="inline-flex justify-center h-8 rounded">
                     <span className="p-1 bg-green-800 rounded">{item.price}$</span></div>
                 <div className="flex items-center justify-center">
-                    <button className="p-1 mx-1 flex-1  text-cyan-400" onClick={() => navigate(`/edit/${item.id}`)}>Edit</button>
-                    <button className="p-1 flex-1 text-cyan-400" onClick={() => handleDelete(item.id)}>Delete</button>
+                    <button className="p-1 mx-1 flex-1  text-cyan-200 hover:text-cyan-100" onClick={() => navigate(`/edit/${item.id}`)}>Edit</button>
+                    <button className="p-1 flex-1 text-cyan-200 hover:text-cyan-100" onClick={() => handleDelete(item.id)}>Delete</button>
                 </div>
             </div>
         </div>

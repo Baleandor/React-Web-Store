@@ -33,7 +33,7 @@ export function useCart() {
 export function CartProvider({ children }: CartProviderProps) {
     const [cartItemsById, setCartItemsById] = useLocalStorage<{ [key: number]: CartItem }>("shopping-cart", {})
 
-    const cartItems = Object.values(cartItemsById)
+    const cartItems = Object.values(cartItemsById || {})
 
     const cartQuantity = cartItems.reduce((quantity, item) => item.quantity + quantity, 0)
 
