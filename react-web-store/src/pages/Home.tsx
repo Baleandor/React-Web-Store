@@ -37,10 +37,13 @@ export default function Home() {
   ];
   return (
     <div className="flex-box relative">
-      <div className="justify-center text-center m-4 text-4xl text-lime-100">
+      <div className="justify-center text-center m-4 text-5xl text-lime-100">
         Da Dok's Speshul Show off Collekshun!
       </div>
-      <button className="text-lime-100 hover:text-lime-50" onClick={() => setShowDokStock(!showDokStock)}>
+      <button
+        className="text-cyan-200 hover:text-cyan-100"
+        onClick={() => setShowDokStock(!showDokStock)}
+      >
         {showDokStock ? "Hide da Dok's Stock" : "Show off da Dok's Stock"}
       </button>
       {showDokStock && (

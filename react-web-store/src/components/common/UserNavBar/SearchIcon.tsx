@@ -9,7 +9,7 @@ export default function SearchIcon({ searchParams }: SearchIconProps) {
   const navigate = useNavigate();
 
   return (
-    <div className="flex bg-lime-800 w-10 h-full justify-center items-center">
+    <div className="flex bg-lime-800 w-10 h-full justify-center items-center rounded-r-md">
       <img
         src="/images/search-icon.png"
         className="w-6 h-6 cursor-pointer"

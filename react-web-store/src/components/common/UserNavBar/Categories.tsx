@@ -22,7 +22,7 @@ export default function Categories() {
 
     
     return (
-        <div>
+        <div className="relative overflow-visible">
             <div onClick={handleToggleDropdown} className="cursor-pointer p-0.5">
                 <div className="text-cyan-200 hover:text-cyan-100">Categories</div>
             </div>

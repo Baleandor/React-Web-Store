@@ -7,14 +7,14 @@ import UserProfile from "./UserProfile";
 
 export default function UserNavBar() {
   return (
-    <div className="flex h-20 w-full px-1">
-      <div className="flex-shrink-0 self-start">
+    <div className="grid grid-cols-3 h-20 w-full px-1 items-center">
+      <div className="flex justify-start">
         <StoreLogo />
       </div>
-      <div className="flex-1 flex justify-center px-4">
+      <div className="flex justify-center">
         <SearchBar />
       </div>
-      <div className="flex flex-shrink-0 self-end">
+      <div className="flex justify-end items-center">
         <UserProfile />
         <SellItems />
         <ShoppingCart />
