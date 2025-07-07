@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { getAllItems } from "../utils/api";
 import CategoryItem from "../components/common/CategoryItem";
 import { CategoryItemDetailsType } from "../types";
-import { errorTracker } from "../utils/errorTracker";
+import { ErrorTracker } from "../utils/errorTracker";
 
 
 export default function SearchResult() {
@@ -12,8 +12,6 @@ export default function SearchResult() {
     const { searchParams } = useParams()
 
     const { data, error, isLoading } = useQuery<CategoryItemDetailsType[], Error>(["all-items"], getAllItems)
-
-    errorTracker(error)
 
     const autofillResult = data?.filter((result) => {
         if (searchParams) {
@@ -33,6 +31,7 @@ export default function SearchResult() {
                     <CategoryItem key={item.id} {...item} showDescription />
                 )
             })}
+            <ErrorTracker error={error} />
         </div>
     )
 }

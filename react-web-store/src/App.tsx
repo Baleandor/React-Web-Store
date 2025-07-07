@@ -1,5 +1,8 @@
 import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "./store";
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -13,7 +16,6 @@ import CategoryDetailsPage from "./pages/CategoryDetailsPage";
 import CategoryPage from "./pages/CategoryPage";
 import Home from "./pages/Home";
 import SellItemsPage from "./pages/SellItemsPage";
-import { CartProvider } from "./hooks/CartContext";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import MyOffers from "./pages/MyOffers";
@@ -22,6 +24,7 @@ import MyWishlist from "./pages/MyWishlist";
 import EditMyOffers from "./pages/EditMyOffers";
 import NotFound from "./pages/NotFound";
 import { ROUTE_PATH } from "./utils/urls";
+import LoadingBox from "./components/common/LoadingBox";
 
 const client = new QueryClient();
 
@@ -81,12 +84,14 @@ export default function App() {
   );
 
   return (
-    <CartProvider>
-      <QueryClientProvider client={client}>
-        <div className="flex-box relative">
-          <RouterProvider router={router} />
-        </div>
-      </QueryClientProvider>
-    </CartProvider>
+    <Provider store={store}>
+      <PersistGate loading={<LoadingBox />} persistor={persistor}>
+        <QueryClientProvider client={client}>
+          <div className="flex-box relative">
+            <RouterProvider router={router} />
+          </div>
+        </QueryClientProvider>
+      </PersistGate>
+    </Provider>
   );
 }

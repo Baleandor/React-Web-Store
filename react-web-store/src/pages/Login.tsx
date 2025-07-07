@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { supabaseClient } from "../supabase/client";
@@ -22,8 +22,15 @@ type LoginData = {
 export default function Login() {
 
     const navigate = useNavigate()
+    const [message, setMessage] = useState<string | undefined>(undefined)
 
     const { register, handleSubmit, formState: { errors } } = useForm<LoginData>({ resolver: zodResolver(loginSchema), mode: "onSubmit" });
+
+    const formErrorMessage = errors.email?.message || errors.password?.message
+
+    useEffect(() => {
+        setMessage(formErrorMessage)
+    }, [formErrorMessage])
 
     async function onSubmit(data: LoginData) {
 
@@ -33,14 +40,15 @@ export default function Login() {
                 password: data.password,
             })
 
-            error && alert(error.message)
+            if (error) {
+                setMessage(error.message)
+                return
+            }
             navigate(ROUTE_PATH.HOME)
         } catch (error) {
-            alert(error)
+            setMessage(error instanceof Error ? error.message : "An unexpected error occurred")
         }
     }
-
-    const errorMessage = errors.email?.message || errors.password?.message
 
 
     return (
@@ -63,9 +71,7 @@ export default function Login() {
                 </form>
             </div>
 
-            {!!errorMessage &&
-                <ShrekErrorBox errorMessage={errorMessage} />
-            }
+            <ShrekErrorBox errorMessage={message} />
         </div>
     )
 }

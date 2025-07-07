@@ -5,14 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { supabaseClient } from "../../../supabase/client";
 import UserProfileDropDown from "./UserProfileDropDown";
 import { ROUTE_PATH } from "../../../utils/urls";
-import { errorTracker } from "../../../utils/errorTracker";
-
-const { data, error } = await supabaseClient.auth.getSession();
+import { ErrorTracker } from "../../../utils/errorTracker";
 
 export default function UserProfile() {
   const navigate = useNavigate();
 
   const [user, setUser] = useState<User | null>(null);
+  const [error, setError] = useState<any>(null);
 
   const [open, setOpen] = useState(false);
 
@@ -20,17 +19,27 @@ export default function UserProfile() {
     setOpen(false);
   };
 
-  const openProfileDropdown = () => {
-    setOpen(true);
+
+  const toggleProfileDropdown = () => {
+    setOpen((prev) => !prev);
   };
 
-  errorTracker(error);
-
   useEffect(() => {
-    setUser(data?.session?.user || null);
+    // Get initial session
+    const getInitialSession = async () => {
+      const { data, error } = await supabaseClient.auth.getSession();
+      if (error) {
+        setError(error);
+      } else {
+        setUser(data?.session?.user || null);
+      }
+    };
 
+    getInitialSession();
+
+    // Listen for auth changes
     const { data: authListener } = supabaseClient.auth.onAuthStateChange(
-      (event, session) => {
+      (_, session) => {
         if (session?.user) {
           setUser(session?.user || null);
         } else {
@@ -49,8 +58,8 @@ export default function UserProfile() {
       <div className="inline-flex text-cyan-200 hover:text-cyan-100 w-18 h-8 p-1 justify-center align-center text-center cursor-pointer border border-transparent hover:border-lime-400 hover:rounded">
         <div className="flex">
           {user ? (
-            <div className="self-center text-l" onClick={openProfileDropdown}>
-              Hello, {data?.session?.user.user_metadata.username}!
+            <div className="self-center text-l" onClick={toggleProfileDropdown}>
+              Hello, {user.user_metadata.display_name}!
             </div>
           ) : (
             <span
@@ -59,7 +68,7 @@ export default function UserProfile() {
                 navigate(ROUTE_PATH.REGISTER);
               }}
             >
-              Register
+              Sign In
             </span>
           )}
         </div>
@@ -67,6 +76,7 @@ export default function UserProfile() {
       {open && (
         <UserProfileDropDown closeProfileDropdown={closeProfileDropdown} />
       )}
+      <ErrorTracker error={error} />
     </div>
   );
 }

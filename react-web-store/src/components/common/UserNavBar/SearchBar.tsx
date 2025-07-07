@@ -7,7 +7,7 @@ import SearchBarAutofillDropdown from "./SearchBarAutofillDropdown";
 import SearchIcon from "./SearchIcon";
 import { debounce } from "lodash";
 import { useForm } from "react-hook-form";
-import { errorTracker } from "../../../utils/errorTracker";
+import { ErrorTracker } from "../../../utils/errorTracker";
 
 interface ISearchInputs {
   searchParams: string;
@@ -24,8 +24,6 @@ export default function SearchBar() {
     ["all-items"],
     getAllItems
   );
-
-  errorTracker(error);
 
   const [searchParams, setSearchParams] = useState("");
   const [isFocused, setIsFocused] = useState(false);
@@ -59,8 +57,16 @@ export default function SearchBar() {
             {...register("searchParams")}
             className="bg-lime-500 w-full h-full outline-none pl-1"
             onChange={debouncedOnChange}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
+            onFocus={() => {
+              setIsFocused(true);
+              if (searchParams.length > 0) {
+                setIsAutofillOpen(true);
+              }
+            }}
+            onBlur={() => {
+              setIsFocused(false);
+              setIsAutofillOpen(false);
+            }}
           ></input>
         </form>
         <SearchIcon searchParams={searchParams} />
@@ -71,6 +77,7 @@ export default function SearchBar() {
           />
         )}
       </div>
+      <ErrorTracker error={error} />
     </div>
   );
 }

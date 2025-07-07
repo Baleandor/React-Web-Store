@@ -1,83 +1,182 @@
+import { useState, useEffect, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import OfferItem from "../components/common/OfferItem";
 import { supabaseClient } from "../supabase/client";
 import LoadingBox from "../components/common/LoadingBox";
+import ImageWithLoading from "../components/common/ImageWithLoading";
 import { ROUTE_PATH } from "../utils/urls";
+import ShrekErrorBox from "../components/common/ShrekErrorBox";
+
+// Define proper types
+interface WishlistItem {
+  id: string;
+  title: string;
+  price: number;
+  description: string;
+  imageurl: string;
+}
+
+// Create a separate component for wishlist items
+function WishlistItemComponent({ item, handleDelete }: { item: WishlistItem; handleDelete: (id: string) => void }) {
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+
+  return (
+    <div
+      key={item.id}
+      className="text-center place-items-center m-2 p-4 border border-lime-700 rounded"
+    >
+      <ImageWithLoading
+        src={item.imageurl}
+        alt={item.title}
+        className="w-60 h-52 m-4 rounded-lg border-2 border-lime-600"
+        onLoad={() => setIsImageLoaded(true)}
+        onError={() => setIsImageLoaded(true)} // Show content even if image fails
+      />
+      
+      {/* Only show content when image is ready */}
+      <div style={{ opacity: isImageLoaded ? 1 : 0, transition: 'opacity 0.3s ease' }}>
+        <div className="text-lime-100">{item.title}</div>
+        <div className="text-lime-100">${item.price}</div>
+        <div className="inline-block">
+          <button
+            className="p-1 border border-lime-400 text-cyan-200 rounded cursor-pointer hover:text-cyan-100"
+            onClick={() => handleDelete(item.id)}
+          >
+            Delete
+          </button>
+        </div>
+        <div className="text-lime-100">{item.description}</div>
+      </div>
+    </div>
+  );
+}
 
 export default function MyWishlist() {
   const navigate = useNavigate();
+  const [message, setMessage] = useState<string | undefined>(undefined);
 
+  // Query for user authentication and data
   const {
-    data: info,
+    data: userInfo,
     isFetching,
-    error: screwUp,
-  } = useQuery(["user"], () => supabaseClient.auth.getUser());
+    error: userError,
+    refetch: refetchUser,
+  } = useQuery({
+    queryKey: ["user"],
+    queryFn: () => supabaseClient.auth.getUser(),
+    retry: 1,
+  });
 
-  screwUp && alert(screwUp);
+  const userId = userInfo?.data.user?.id;
+  const wishlist: WishlistItem[] =
+    userInfo?.data.user?.user_metadata?.wishlist || [];
 
-  const userId = info?.data.user?.id;
+  // Handle authentication error
+  useEffect(() => {
+    if (userError) {
+      setMessage(
+        userError instanceof Error
+          ? userError.message
+          : "An error occurred while fetching your wishlist"
+      );
+    }
+  }, [userError]);
 
-  // const { data, error } = useQuery({
-  //     queryKey: ["wishlist"],
-  //     queryFn: () => {
-  //         return supabaseClient
-  //             .from('wishlist')
-  //             .select('*')
-  //             .eq('ownerid', userId)
-  //     }, enabled: !!userId
-  // })
+  // Navigate to login if user is not authenticated
+  useEffect(() => {
+    if (!userId && !isFetching && userInfo) {
+      navigate(ROUTE_PATH.LOGIN);
+    }
+  }, [userId, isFetching, userInfo, navigate]);
 
-    // error && alert(error);
+  // Handle item deletion
+  const handleDelete = useCallback(
+    async (id: string) => {
+      try {
+        setMessage(undefined); // Clear any existing messages
 
-    // const offers = data?.data || [];
+        const {
+          data: { user },
+        } = await supabaseClient.auth.getUser();
 
-  const handleDelete = async (id:string) => {
-    await supabaseClient.from("wishlist").delete().eq("id", id);
-  };
+        if (!user) {
+          setMessage("User not authenticated");
+          return;
+        }
 
-  if (!userId && !isFetching) {
-    navigate(ROUTE_PATH.LOGIN);
+        // Get current wishlist from user metadata
+        const currentWishlist = user.user_metadata?.wishlist || [];
+
+        // Filter out the item to delete
+        const updatedWishlist = currentWishlist.filter(
+          (item: WishlistItem) => item.id !== id
+        );
+
+        // Update user metadata with filtered wishlist array
+        const { error } = await supabaseClient.auth.updateUser({
+          data: {
+            ...user.user_metadata,
+            wishlist: updatedWishlist,
+          },
+        });
+
+        if (error) {
+          setMessage(error.message);
+        } else {
+          setMessage(undefined);
+          // Refresh the user data to update the metadata
+          refetchUser();
+        }
+      } catch (error) {
+        setMessage(
+          error instanceof Error
+            ? error.message
+            : "An unexpected error occurred while removing the item"
+        );
+      }
+    },
+    [refetchUser]
+  );
+
+  // Show loading state
+  if (isFetching) {
+    return (
+      <div className="p-2 m-2 text-lime-300 flex flex-col text-center">
+        <LoadingBox />
+      </div>
+    );
+  }
+
+  // Don't render anything if user is not authenticated (will redirect)
+  if (!userId) {
+    return null;
   }
 
   return (
     <div className="p-2 m-2 text-lime-300 flex flex-col text-center">
-      {isFetching && <LoadingBox />}
-      {/* {offers?.map((item): any => {
-        return (
-          <div
-            key={item.id}
-            className="flex flex-col items-center  p-5 m-5 border border-lime-700 rounded"
+      {wishlist.length > 0 ? (
+        wishlist.map((item: WishlistItem) => (
+          <WishlistItemComponent 
+            key={item.id} 
+            item={item} 
+            handleDelete={handleDelete} 
+          />
+        ))
+      ) : (
+        <div className="flex flex-col items-center justify-center p-8">
+          <p className="text-center text-lime-200 text-2xl font-bold mb-4">
+            No items in wishlist
+          </p>
+          <button
+            onClick={() => navigate("/")}
+            className="p-1 border border-lime-400 text-cyan-200 rounded cursor-pointer hover:text-cyan-100"
           >
-            <div className="bg-green-800 p-1 rounded text-lime-300">
-              <span>{item.title}</span>
-            </div>
-            <div className="p-3">
-              <img src={item.imageurl} className="h-80 object-fill"></img>
-            </div>
-            {
-              <div>
-                <p className="bg-green-800 p-1 rounded text-lime-300">
-                  {item.description}
-                </p>{" "}
-              </div>
-            }
-            <div className="p-1 flex flex-col text-lime-300 space-x-1">
-              <div className="inline-flex justify-center h-8 rounded">
-                <span className="p-1 bg-green-800 rounded">{item.price}$</span>
-              </div>
-              <div className="flex items-center justify-center">
-                <button
-                  className="p-1 flex-1 text-cyan-400"
-                  onClick={() => handleDelete(item.id)}
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          </div>
-        );
-      })} */}
+            Browse Items
+          </button>
+        </div>
+      )}
+
+      <ShrekErrorBox errorMessage={message} />
     </div>
   );
 }

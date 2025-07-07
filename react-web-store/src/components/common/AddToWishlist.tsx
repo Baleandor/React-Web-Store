@@ -1,40 +1,103 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabaseClient } from "../../supabase/client";
 import { ROUTE_PATH } from "../../utils/urls";
-
+import ShrekErrorBox from "./ShrekErrorBox";
 
 type AddToWishlistProps = {
-    description: string,
-    imgUrl: string,
-    title: string,
-    price: number
-}
+  description: string;
+  imgUrl: string;
+  title: string;
+  price: number;
+};
 
+export default function AddToWishlist({
+  description,
+  imgUrl,
+  title,
+  price,
+}: AddToWishlistProps) {
+  const navigate = useNavigate();
+  const [message, setMessage] = useState<string | undefined>(undefined);
 
-export default function AddToWishlist({ description, imgUrl, title, price }: AddToWishlistProps) {
+  const handleAddToWishlist = async () => {
+    try {
+      const { data, error } = await supabaseClient.auth.getSession();
 
-    const navigate = useNavigate()
+      if (error) {
+        setMessage(error.message);
+        return;
+      }
 
-    const handleAddToWishlist = async () => {
-        const { data, error } = await supabaseClient.auth.getSession()
+      if (!data.session?.user) {
+        navigate(ROUTE_PATH.LOGIN);
+        return;
+      }
 
-        error && alert(error.message)
+      // Get current user data
+      const {
+        data: { user },
+      } = await supabaseClient.auth.getUser();
 
-        if (!data.session?.user) {
-            navigate(ROUTE_PATH.LOGIN)
-        } else {
-            await supabaseClient
-                .from('wishlist')
-                .insert([
-                    { title: title, price: price, description: description, imageurl: imgUrl, ownerid: data?.session?.user.id },
-                ])
-                alert("Item successfully added to Wishlist!")
-        }
+      if (!user) {
+        setMessage("User not authenticated");
+        return;
+      }
+
+      // Get current wishlist from user metadata
+      const currentWishlist = user.user_metadata?.wishlist || [];
+
+      // Check if item already exists in wishlist
+      const itemExists = currentWishlist.some(
+        (item: any) => item.title === title && item.imageurl === imgUrl
+      );
+
+      if (itemExists) {
+        setMessage("Item already in wishlist!");
+        return;
+      }
+
+      // Create new wishlist item with unique ID
+      const newWishlistItem = {
+        id: crypto.randomUUID(),
+        title: title,
+        price: price,
+        description: description,
+        imageurl: imgUrl,
+      };
+
+      // Add new item to the wishlist array
+      const updatedWishlist = [...currentWishlist, newWishlistItem];
+
+      // Update user metadata with new wishlist array
+      const { error: updateError } = await supabaseClient.auth.updateUser({
+        data: {
+          ...user.user_metadata,
+          wishlist: updatedWishlist,
+        },
+      });
+
+      if (updateError) {
+        setMessage(updateError.message);
+      } else {
+        setMessage(undefined);
+      }
+    } catch (error) {
+      setMessage(
+        error instanceof Error ? error.message : "An unexpected error occurred"
+      );
     }
+  };
 
-
-    return (
-        <button className="p-1 border border-lime-400 text-cyan-200 rounded cursor-pointer hover:text-cyan-100" onClick={handleAddToWishlist}>Wishlist</button>
-    )
+  return (
+    <>
+      <button
+        className="p-1 border border-lime-400 text-cyan-200 rounded cursor-pointer hover:text-cyan-100"
+        onClick={handleAddToWishlist}
+      >
+        Wishlist
+      </button>
+      <ShrekErrorBox errorMessage={message} />
+    </>
+  );
 }

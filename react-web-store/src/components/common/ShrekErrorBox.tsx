@@ -16,7 +16,7 @@ export default function ShrekErrorBox({ errorMessage }: ShrekErrorBoxProps) {
             // Set timer to hide the component after 5 seconds
             const timer = setTimeout(() => {
                 setIsVisible(false);
-            }, 5000);
+            }, 2500);
 
             // Cleanup timer if component unmounts or errorMessage changes
             return () => clearTimeout(timer);

@@ -12,9 +12,15 @@ export default function SearchBarAutofillDropdown({
   setIsAutofillOpen,
 }: SearchBarAutofillDropdownType) {
   const navigate = useNavigate();
+  
   const navigateToItem = (id: number) => {
     setIsAutofillOpen(false);
     navigate(`/search/${id}`);
+  };
+
+  const handleItemClick = (event: React.MouseEvent, id: number) => {
+    event.preventDefault(); // Prevent the input from losing focus
+    navigateToItem(id);
   };
 
   return (
@@ -25,8 +31,8 @@ export default function SearchBarAutofillDropdown({
             return (
               <li
                 key={item.id}
-                onClick={() => navigateToItem(item.id)}
-                className="hover:underline cursor-pointer"
+                onMouseDown={(event) => handleItemClick(event, item.id)}
+                className="hover:underline cursor-pointer p-1"
               >
                 {item.title}
               </li>

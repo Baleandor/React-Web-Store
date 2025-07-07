@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CategoryItemDetailsType } from "../../types";
 import AddToCart from "./AddToCart";
 import AddToWishlist from "./AddToWishlist";
+import ImageWithLoading from "./ImageWithLoading";
 
 
 type CategoryItemProps = CategoryItemDetailsType & {
@@ -13,24 +14,36 @@ type CategoryItemProps = CategoryItemDetailsType & {
 export default function CategoryItem({ id, title, price, description, image, showDescription, categoryId }: CategoryItemProps) {
 
     const navigate = useNavigate()
+    const [isImageLoaded, setIsImageLoaded] = useState(false);
 
 
     return (
-        <div key={id} className="flex items-center flex-col p-5 m-5 border border-lime-700 rounded">
-            <div className="bg-green-800 p-1 rounded text-lime-300">
-                <span>{title}</span>
-            </div>
-            <div className="p-3">
-                <img src={image} className="h-80 object-fill"></img>
-            </div>
-            {showDescription && <div><p className="bg-green-800 p-1 rounded text-lime-300">{description}</p> </div>}
-            <div className="p-1 text-lime-300 space-x-1">
-                <div className="inline-flex p-1 h-8 bg-green-800 rounded">{price}$</div>
-                {!showDescription && <button className="p-1 rounded border border-lime-400  text-cyan-200 hover:text-cyan-100  cursor-pointer" onClick={() => {
-                    navigate(`/categories/${categoryId}/${id}`)
-                }}>Details</button>}
-                <AddToWishlist title={title} price={price} description={description} imgUrl={image} />
-                <AddToCart id={id}/>
+        <div key={id} className="text-center place-items-center m-2 p-4 border border-lime-700 rounded">
+            <ImageWithLoading
+                src={image}
+                alt={title}
+                className="w-60 h-52 m-4 rounded-lg border-2 border-lime-600"
+                onLoad={() => setIsImageLoaded(true)}
+                onError={() => setIsImageLoaded(true)} // Show content even if image fails
+            />
+            
+            {/* Only show content when image is ready */}
+            <div style={{ opacity: isImageLoaded ? 1 : 0, transition: 'opacity 0.3s ease' }}>
+                <div className="text-lime-100">{title}</div>
+                <div className="text-lime-100">${price}</div>
+                <div className="inline-block space-x-2">
+                    {!showDescription && (
+                        <button 
+                            className="p-1 border border-lime-400 text-cyan-200 rounded cursor-pointer hover:text-cyan-100" 
+                            onClick={() => navigate(`/categories/${categoryId}/${id}`)}
+                        >
+                            Details
+                        </button>
+                    )}
+                    <AddToWishlist title={title} price={price} description={description} imgUrl={image} />
+                    <AddToCart id={id} />
+                </div>
+                {showDescription && <div className="text-lime-100">{description}</div>}
             </div>
         </div>
     )
