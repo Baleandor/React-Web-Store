@@ -1,11 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 import type { RootState } from "./index";
 
-export const selectCartItemsById = (state: RootState) => state.cart.items;
-
-export const selectCartItems = createSelector([selectCartItemsById], (items) =>
-  Object.values(items),
-);
+export const selectCartItems = (state: RootState) => state.cart.items;
 
 export const selectCartQuantity = createSelector([selectCartItems], (items) =>
   items.reduce((total, item) => total + item.quantity, 0),
@@ -16,4 +12,4 @@ export const selectCartTotal = createSelector([selectCartItems], (items) =>
 );
 
 export const selectItemQuantity = (state: RootState, id: number) =>
-  state.cart.items[id]?.quantity ?? 0;
+  state.cart.items.find((item) => item.id === id)?.quantity ?? 0;

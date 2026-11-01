@@ -15,6 +15,7 @@ import storage from "redux-persist/es/storage";
 import authReducer from "./authSlice";
 import cartReducer from "./cartSlice";
 import uiReducer from "./uiSlice";
+import { migrations, PERSIST_VERSION } from "./migrations";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -25,13 +26,10 @@ const rootReducer = combineReducers({
 const persistedReducer = persistReducer(
   {
     key: "root",
-    version: 1,
+    version: PERSIST_VERSION,
     storage,
     whitelist: ["cart"],
-    // v1 stores a product snapshot in each cart item; carts saved before that are dropped.
-    migrate: createMigrate({
-      1: (state) => ({ ...state, cart: { items: {} } }) as typeof state,
-    }),
+    migrate: createMigrate(migrations),
   },
   rootReducer,
 );

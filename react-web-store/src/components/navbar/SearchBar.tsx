@@ -9,6 +9,7 @@ import { useNavigate } from "react-router";
 import { useAllProducts } from "../../hooks/useProducts";
 import { useDebouncedValue } from "../../hooks/useDebouncedValue";
 import { paths } from "../../utils/routes";
+import { matchesQuery } from "../../utils/search";
 import CategoriesMenu from "./CategoriesMenu";
 
 const MAX_SUGGESTIONS = 6;
@@ -26,7 +27,7 @@ export default function SearchBar() {
   const suggestions = useMemo(() => {
     if (!debouncedQuery || !products) return [];
     return products
-      .filter((product) => product.title.toLowerCase().includes(debouncedQuery))
+      .filter((product) => matchesQuery(product, debouncedQuery))
       .slice(0, MAX_SUGGESTIONS);
   }, [products, debouncedQuery]);
 
