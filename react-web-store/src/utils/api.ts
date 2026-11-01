@@ -1,13 +1,25 @@
-import axios from 'axios'
-import { CategoryItemDetailsType } from '../types'
+import type { Product } from "../types";
 
-const fakestore = 'https://fakestoreapi.com/products'
+const FAKE_STORE_URL = "https://fakestoreapi.com/products";
 
-export const getCategories = (): Promise<string[]> => axios.get(`${fakestore}/categories`).then((response) => response.data)
+async function request<T>(path: string): Promise<T> {
+  const response = await fetch(`${FAKE_STORE_URL}${path}`);
+  if (!response.ok) {
+    throw new Error(
+      `Request failed: ${response.status} ${response.statusText}`,
+    );
+  }
+  // The API answers unknown product ids with 200 and an empty body.
+  const body = await response.text();
+  return (body ? JSON.parse(body) : null) as T;
+}
 
-export const getCategory = (category_id: string | undefined): Promise<CategoryItemDetailsType[]> => axios.get(`${fakestore}/category/${category_id}`).then((response) => response.data)
+export const getCategories = () => request<string[]>("/categories");
 
-export const getCategoryItem = (item_id: string | number | undefined): Promise<CategoryItemDetailsType> => axios.get(`${fakestore}/${item_id}`).then((response) => response.data)
+export const getCategoryProducts = (category: string) =>
+  request<Product[]>(`/category/${encodeURIComponent(category)}`);
 
-export const getAllItems = (): Promise<CategoryItemDetailsType[]> => axios.get(`${fakestore}`).then((response) => response.data)
+export const getProduct = (id: string) =>
+  request<Product | null>(`/${encodeURIComponent(id)}`);
 
+export const getAllProducts = () => request<Product[]>("");
