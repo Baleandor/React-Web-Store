@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Provider } from "react-redux";
 import { RouterProvider } from "react-router/dom";
-import { PersistGate } from "redux-persist/integration/react";
+import { PersistGate } from "redux-persist/es/integration/react";
 import Spinner from "./components/ui/Spinner";
 import { useAuthSync } from "./hooks/useAuthSync";
 import { router } from "./router";
