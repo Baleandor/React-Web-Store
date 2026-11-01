@@ -1,20 +1,18 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useLocation, useNavigate, type Location } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import AuthCard from "../components/form/AuthCard";
 import FormField from "../components/form/FormField";
 import { useNotify } from "../hooks/useNotify";
 import { loginSchema, type LoginValues } from "../schemas";
 import { supabaseClient } from "../supabase/client";
-import { ROUTES } from "../utils/routes";
+import { getRedirectPath, ROUTES } from "../utils/routes";
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const notify = useNotify();
-  const redirectTo =
-    (location.state as { from?: Location } | null)?.from?.pathname ??
-    ROUTES.HOME;
+  const redirectTo = getRedirectPath(location.state);
 
   const {
     register,

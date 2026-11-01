@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useId, useRef, useState } from "react";
 import { Link } from "react-router";
 import { useCategories } from "../../hooks/useProducts";
 import { useClickOutside } from "../../hooks/useClickOutside";
@@ -8,6 +8,7 @@ import { paths } from "../../utils/routes";
 export default function CategoriesMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const panelId = useId();
   const close = useCallback(() => setIsOpen(false), []);
   useClickOutside(containerRef, close, isOpen);
 
@@ -17,7 +18,7 @@ export default function CategoriesMenu() {
     <div ref={containerRef} className="relative h-full">
       <button
         type="button"
-        aria-haspopup="menu"
+        aria-controls={panelId}
         aria-expanded={isOpen}
         onClick={() => setIsOpen((open) => !open)}
         className="flex h-full items-center gap-1 rounded-l-md bg-lime-800 px-3 text-sm text-cyan-200 hover:text-cyan-100"
@@ -27,7 +28,7 @@ export default function CategoriesMenu() {
 
       {isOpen && (
         <div
-          role="menu"
+          id={panelId}
           className="absolute top-full left-0 z-50 mt-1 w-52 overflow-hidden rounded-md border border-lime-700 bg-zinc-800 py-1 shadow-xl"
         >
           {isPending && (
@@ -41,7 +42,6 @@ export default function CategoriesMenu() {
           {categories?.map((category) => (
             <Link
               key={category}
-              role="menuitem"
               to={paths.category(category)}
               onClick={close}
               className="block px-3 py-2 text-sm text-cyan-200 hover:bg-lime-900/60 hover:text-cyan-100"

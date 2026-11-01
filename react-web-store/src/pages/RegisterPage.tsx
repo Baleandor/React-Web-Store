@@ -6,7 +6,7 @@ import FormField from "../components/form/FormField";
 import { useNotify } from "../hooks/useNotify";
 import { registerSchema, type RegisterValues } from "../schemas";
 import { supabaseClient } from "../supabase/client";
-import { ROUTES } from "../utils/routes";
+import { getRedirectPath, ROUTES } from "../utils/routes";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -41,7 +41,7 @@ export default function RegisterPage() {
     }
 
     notify.success(`Welcome to da mob, ${displayName}!`);
-    navigate(ROUTES.HOME);
+    navigate(getRedirectPath(location.state), { replace: true });
   };
 
   return (

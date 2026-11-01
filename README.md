@@ -1,107 +1,103 @@
-# React Web Store Documentation
+# Dok Scrap Krumpa's Emporium
 
-# DISCLAIMER! If the app does not connect to the supabase backend, it means the free instance of that database has been frozen and I need to unfreeze it manually. Please contact me via email so that I can do so when needed. Thanks!
+[![CI](https://github.com/Baleandor/React-Web-Store/actions/workflows/ci.yml/badge.svg)](https://github.com/Baleandor/React-Web-Store/actions/workflows/ci.yml)
 
-## Summary
+An Ork-themed online marketplace built with React 19 and TypeScript. Browse and search products, manage a cart and wishlist, and list your own items for sale.
 
-The React Web Store is an online marketplace inspired by eBay, providing users with a platform to buy and sell items. This application offers a wide range of features to enhance user experience, including user authentication, favorites management, cart functionality, item selling, and a robust search system. Built with React 19 and TypeScript, the app uses Supabase, TanStack Query, Redux Toolkit, React Router and more to create a seamless and efficient online shopping environment.
-
-## Table of Contents
-
-- [Getting Started](#getting-started)
-  - [Installation](#installation)
-  - [Usage](#usage)
-- [Features](#features)
-  - [User Authentication](#user-authentication)
-  - [Favorites Management](#favorites-management)
-  - [Cart Functionality](#cart-functionality)
-  - [Item Selling](#item-selling)
-  - [Search System](#search-system)
-- [Dependencies](#dependencies)
-
-## Getting Started
-
-### Installation
-
-1. Clone the repository:
-
-   ```bash
-   git clone <repository-url>
-   ```
-
-2. Navigate to the project directory:
-
-   ```bash
-   cd react-web-store
-   ```
-
-3. Install dependencies using npm:
-
-   ```bash
-   npm install
-   ```
-
-4. Copy `.env.example` to `.env.local` and fill in your Supabase project URL and anon key.
-
-Requires Node.js 22.22 or newer.
-
-### Usage
-
-1. Start the development server:
-
-   ```bash
-   npm run dev
-   ```
-
-2. Open your web browser and navigate to `http://localhost:5173` to access the React Web Store.
-
-Other scripts: `npm run build`, `npm run preview`, `npm run lint`, `npm run typecheck`, `npm run format`.
+<!--
+  TODO: add the live demo link and a screenshot/GIF here, e.g.
+  **[Live demo](https://your-deploy-url)** · demo account: demo@example.com / password
+  ![Home page](docs/screenshot-home.png)
+-->
 
 ## Features
 
-### User Authentication
+- **Authentication**: register, log in and log out with Supabase Auth. Protected pages redirect to login and send you back to where you were afterwards.
+- **Browsing**: products and categories from the [Fake Store API](https://fakestoreapi.com), with cached requests and loading, error and empty states.
+- **Search**: debounced as-you-type suggestions with full keyboard support (arrow keys, Enter, Escape), plus a results page that matches title and category.
+- **Cart**: add, increase, decrease, remove and clear items. Saved to `localStorage` with versioned migrations, so a schema change never breaks a returning visitor's cart.
+- **Wishlist**: save products and Da Dok's own stock to your account.
+- **Selling**: create, edit and delete your own listings, with schema-validated forms.
+- **Responsive and accessible**: mobile-first layout, labelled form fields with linked error messages, an ARIA combobox search, visible focus styles and announced notifications.
 
-- Users can register, log in, and log out of their accounts.
-- Secure authentication is implemented using Supabase, ensuring user data safety.
+## Tech stack
 
-### Favorites Management
+| Concern      | Choice                                                 |
+| ------------ | ------------------------------------------------------ |
+| UI           | React 19, TypeScript (strict), Tailwind CSS 4          |
+| Build        | Vite                                                   |
+| Routing      | React Router data router, lazily loaded pages          |
+| Server state | TanStack Query (Fake Store API and Supabase user data) |
+| Client state | Redux Toolkit + Redux Persist (cart, session, toasts)  |
+| Forms        | React Hook Form + Zod                                  |
+| Backend      | Supabase (auth and user data)                          |
+| Quality      | Vitest, Testing Library, ESLint, Prettier, GitHub CI   |
 
-- Users can save items to their favorites for quick access.
-- This feature enhances user convenience when revisiting products of interest.
+## Architecture
 
-### Cart Functionality
+```
+react-web-store/src
+├── pages/            One component per route, each code-split into its own chunk
+├── components/
+│   ├── form/         FormField (label + error + aria wiring), ListingForm, AuthCard
+│   ├── layout/       Layout, RequireAuth (protected routes), RouteError
+│   ├── navbar/       SearchBar, CategoriesMenu, UserMenu, CartLink
+│   └── ui/           ProductCard, ProductImage, Spinner, Toasts, ...
+├── hooks/            Data hooks (useProducts, useUserList) and UI hooks
+├── store/            Redux slices, memoised selectors, persist migrations
+├── utils/            API client, route helpers, search matching, formatting
+├── schemas.ts        Zod schemas shared by validation and form types
+└── router.tsx        Route tree
+```
 
-- Users can add and remove items to/from their cart.
-- The cart offers versatile actions: adding and removing items by 1, removing a single count of an item, removing all items of the same name, and clearing the cart entirely.
+Design decisions:
 
-### Item Selling
+- **Server state and client state are kept apart.** Remote data (products, the user's listings) lives in TanStack Query, which handles caching, refetching and mutations. Redux holds only state the browser owns: the cart, the mirrored auth session and toast notifications.
+- **One source of truth for the session.** `useAuthSync` subscribes to Supabase auth events once at the root and mirrors the user into Redux, so components never call Supabase to ask "am I logged in?".
+- **Validation is defined once.** Each form's Zod schema is both the runtime validator and the source of the form's TypeScript type.
+- **Routes are declared, not hard-coded.** Paths come from `ROUTES` and `paths.*` helpers, so a URL change is a one-line edit.
 
-- Users can upload their own items to sell on the platform.
-- This functionality allows users to engage in selling and contribute to the marketplace.
+## Getting started
 
-### Search System
+Requires Node.js 22.22 or newer and a free [Supabase](https://supabase.com) project with email auth enabled.
 
-- The search bar enables users to search for items based on keywords.
-- As-you-type suggestions are debounced and keyboard navigable (arrow keys, Enter, Escape); pressing Enter opens a full results page.
+```bash
+git clone https://github.com/Baleandor/React-Web-Store.git
+cd React-Web-Store/react-web-store
+npm install
+cp .env.example .env.local   # then fill in your Supabase URL and anon key
+npm run dev
+```
 
-## Dependencies
+Then open http://localhost:5173.
 
-The React Web Store app relies on several essential libraries to deliver a comprehensive and user-friendly marketplace:
+No database tables are needed: display names, listings and wishlists are stored in the Supabase user's metadata. If your project requires email confirmation, new users are asked to confirm before logging in.
 
-- **React 19 + TypeScript:** UI and type safety, bundled with **Vite**.
+## Scripts
 
-- **Supabase:** Authentication and user data storage.
+Run from `react-web-store/`:
 
-- **TanStack Query:** Asynchronous data fetching, caching and mutations for the Fake Store API and Supabase user data.
+| Command                | Description                                        |
+| ---------------------- | -------------------------------------------------- |
+| `npm run dev`          | Start the dev server                               |
+| `npm run build`        | Type-check and build for production                |
+| `npm run preview`      | Serve the production build locally                 |
+| `npm test`             | Run the test suite once                            |
+| `npm run test:watch`   | Run tests in watch mode                            |
+| `npm run lint`         | Lint with ESLint                                   |
+| `npm run typecheck`    | Type-check with TypeScript                         |
+| `npm run format:check` | Check formatting with Prettier (`format` fixes it) |
 
-- **Redux Toolkit + Redux Persist:** Client state - the shopping cart (persisted to localStorage), auth session and notifications.
+## Testing
 
-- **React Router:** Data router with code-split, lazily loaded pages and protected routes.
+Tests use Vitest and Testing Library and run in CI on every push and pull request, together with formatting, lint, type-check and build. They cover:
 
-- **React Hook Form + Zod:** Form handling with schema validation.
+- cart reducer, selectors and persisted-state migrations
+- form validation schemas
+- search matching, redirect and route helpers
+- search bar keyboard navigation and the search results page
 
-- **Tailwind CSS 4:** Styling.
+## Roadmap
 
-- **ESLint + Prettier:** Linting and formatting.
-
-These dependencies, along with others listed in the `package.json` file, contribute to the app's functionality and aesthetic. For detailed information about each library, please refer to the respective documentation.
+- Move listings and wishlists from user metadata into Postgres tables with row-level security, so offers become visible to other shoppers.
+- Clear or scope the persisted cart per user on logout.

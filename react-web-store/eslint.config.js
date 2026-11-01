@@ -22,4 +22,9 @@ export default defineConfig([
       globals: globals.browser,
     },
   },
+  {
+    // Test helpers aren't hot-reloaded, so mixing components and functions is fine.
+    files: ["src/test/**", "**/*.test.{ts,tsx}"],
+    rules: { "react-refresh/only-export-components": "off" },
+  },
 ]);
