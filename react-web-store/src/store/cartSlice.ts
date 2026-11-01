@@ -1,64 +1,56 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import type { Product } from "../types";
 
-export interface CartItem {
-  id: number
-  quantity: number
-  price: number
-}
+export type CartItem = Pick<Product, "id" | "title" | "price" | "image"> & {
+  quantity: number;
+};
 
-interface CartState {
-  items: { [key: number]: CartItem }
-}
+type CartState = {
+  items: Record<number, CartItem>;
+};
 
 const initialState: CartState = {
-  items: {}
-}
+  items: {},
+};
 
 const cartSlice = createSlice({
-  name: 'cart',
+  name: "cart",
   initialState,
   reducers: {
-    increaseItemQuantity: (state, action: PayloadAction<number>) => {
-      const id = action.payload
-      if (!state.items[id]) {
-        state.items[id] = { id, quantity: 1, price: 0 }
+    addToCart: (state, action: PayloadAction<Omit<CartItem, "quantity">>) => {
+      const product = action.payload;
+      const existing = state.items[product.id];
+      if (existing) {
+        existing.quantity += 1;
       } else {
-        state.items[id].quantity += 1
+        state.items[product.id] = { ...product, quantity: 1 };
       }
     },
-    decreaseItemQuantity: (state, action: PayloadAction<number>) => {
-      const id = action.payload
-      const existingItem = state.items[id]
-      if (existingItem) {
-        existingItem.quantity -= 1
-        if (existingItem.quantity === 0) {
-          delete state.items[id]
-        }
-      }
+    increaseQuantity: (state, action: PayloadAction<number>) => {
+      const item = state.items[action.payload];
+      if (item) item.quantity += 1;
+    },
+    decreaseQuantity: (state, action: PayloadAction<number>) => {
+      const item = state.items[action.payload];
+      if (!item) return;
+      item.quantity -= 1;
+      if (item.quantity <= 0) delete state.items[action.payload];
     },
     removeFromCart: (state, action: PayloadAction<number>) => {
-      const id = action.payload
-      delete state.items[id]
-    },
-    setItemPrice: (state, action: PayloadAction<{ id: number; price: number }>) => {
-      const { id, price } = action.payload
-      const existingItem = state.items[id]
-      if (existingItem) {
-        existingItem.price = price
-      }
+      delete state.items[action.payload];
     },
     clearCart: (state) => {
-      state.items = {}
-    }
-  }
-})
+      state.items = {};
+    },
+  },
+});
 
 export const {
-  increaseItemQuantity,
-  decreaseItemQuantity,
+  addToCart,
+  increaseQuantity,
+  decreaseQuantity,
   removeFromCart,
-  setItemPrice,
-  clearCart
-} = cartSlice.actions
+  clearCart,
+} = cartSlice.actions;
 
-export default cartSlice.reducer 
+export default cartSlice.reducer;

@@ -1,30 +1,33 @@
-import React from "react";
-import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
-import { getCategory } from "../utils/api";
-import CategoryItem from "../components/common/CategoryItem";
-import { CategoryItemDetailsType } from "../types";
-import { ErrorTracker } from "../utils/errorTracker";
-
-
+import { useParams } from "react-router";
+import ErrorMessage from "../components/ui/ErrorMessage";
+import PageHeader from "../components/ui/PageHeader";
+import ProductList from "../components/ui/ProductList";
+import Spinner from "../components/ui/Spinner";
+import { useCategoryProducts } from "../hooks/useProducts";
+import { capitalize } from "../utils/format";
 
 export default function CategoryPage() {
+  const { categoryName = "" } = useParams();
+  const {
+    data: products,
+    isPending,
+    error,
+    refetch,
+  } = useCategoryProducts(categoryName);
 
-    const { category_id } = useParams()
-
-    const { data, error } = useQuery<CategoryItemDetailsType[], Error>(["category", category_id], () => getCategory(category_id))
-
-    const showDescription = false
-
-
-    return (
-        <div>
-            {data?.map((categoryItem) => {
-                return (
-                    <CategoryItem key={categoryItem.id} {...categoryItem} showDescription={showDescription} categoryId={category_id} />
-                )
-            })}
-            <ErrorTracker error={error} />
-        </div>
-    )
+  return (
+    <>
+      <PageHeader
+        title={capitalize(categoryName)}
+        subtitle={products && `${products.length} products`}
+      />
+      {isPending ? (
+        <Spinner />
+      ) : error ? (
+        <ErrorMessage error={error} onRetry={refetch} />
+      ) : (
+        <ProductList products={products} />
+      )}
+    </>
+  );
 }

@@ -4,7 +4,7 @@
 
 ## Summary
 
-The React Web Store is an online marketplace inspired by eBay, providing users with a platform to buy and sell items. This application offers a wide range of features to enhance user experience, including user authentication, favorites management, cart functionality, item selling, and a robust search system. Built using React, the app utilizes key libraries such as Supabase, React Query, Axios, and more to create a seamless and efficient online shopping environment.
+The React Web Store is an online marketplace inspired by eBay, providing users with a platform to buy and sell items. This application offers a wide range of features to enhance user experience, including user authentication, favorites management, cart functionality, item selling, and a robust search system. Built with React 19 and TypeScript, the app uses Supabase, TanStack Query, Redux Toolkit, React Router and more to create a seamless and efficient online shopping environment.
 
 ## Table of Contents
 
@@ -41,6 +41,10 @@ The React Web Store is an online marketplace inspired by eBay, providing users w
    npm install
    ```
 
+4. Copy `.env.example` to `.env.local` and fill in your Supabase project URL and anon key.
+
+Requires Node.js 22.22 or newer.
+
 ### Usage
 
 1. Start the development server:
@@ -49,7 +53,9 @@ The React Web Store is an online marketplace inspired by eBay, providing users w
    npm run dev
    ```
 
-2. Open your web browser and navigate to `http://localhost:3000` to access the React Web Store.
+2. Open your web browser and navigate to `http://localhost:5173` to access the React Web Store.
+
+Other scripts: `npm run build`, `npm run preview`, `npm run lint`, `npm run typecheck`, `npm run format`.
 
 ## Features
 
@@ -76,22 +82,26 @@ The React Web Store is an online marketplace inspired by eBay, providing users w
 ### Search System
 
 - The search bar enables users to search for items based on keywords.
-- The search system is enhanced using libraries like `match-sorter` and `lodash` to provide a smooth and efficient experience.
+- As-you-type suggestions are debounced and keyboard navigable (arrow keys, Enter, Escape); pressing Enter opens a full results page.
 
 ## Dependencies
 
 The React Web Store app relies on several essential libraries to deliver a comprehensive and user-friendly marketplace:
 
-- **Supabase:** A backend service platform offering authentication, database management, and more.
+- **React 19 + TypeScript:** UI and type safety, bundled with **Vite**.
 
-- **React Query:** A powerful library for handling asynchronous data fetching and caching in React applications, contributing to performance optimization.
+- **Supabase:** Authentication and user data storage.
 
-- **Axios:** A promise-based HTTP client that simplifies making API requests.
+- **TanStack Query:** Asynchronous data fetching, caching and mutations for the Fake Store API and Supabase user data.
 
-- **React Router Dom:** A routing library for React applications, enabling seamless navigation between pages.
+- **Redux Toolkit + Redux Persist:** Client state - the shopping cart (persisted to localStorage), auth session and notifications.
 
-- **Lodash:** A utility library that offers a wide range of functions to manipulate and work with arrays, objects, and more.
+- **React Router:** Data router with code-split, lazily loaded pages and protected routes.
 
-- **Match-sorter:** A library that provides advanced sorting and filtering capabilities for lists of data.
+- **React Hook Form + Zod:** Form handling with schema validation.
+
+- **Tailwind CSS 4:** Styling.
+
+- **ESLint + Prettier:** Linting and formatting.
 
 These dependencies, along with others listed in the `package.json` file, contribute to the app's functionality and aesthetic. For detailed information about each library, please refer to the respective documentation.

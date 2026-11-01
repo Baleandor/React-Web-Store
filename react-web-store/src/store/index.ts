@@ -1,40 +1,52 @@
-import { configureStore, combineReducers } from '@reduxjs/toolkit'
-import { persistStore, persistReducer } from 'redux-persist'
-import storage from 'redux-persist/lib/storage'
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import {
+  createMigrate,
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  persistReducer,
+  persistStore,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+} from "redux-persist";
+import storage from "redux-persist/lib/storage";
 
-import cartReducer from './cartSlice'
-import authReducer from './authSlice'
-import wishlistReducer from './wishlistSlice'
-import offersReducer from './offersSlice'
-import uiReducer from './uiSlice'
+import authReducer from "./authSlice";
+import cartReducer from "./cartSlice";
+import uiReducer from "./uiSlice";
 
 const rootReducer = combineReducers({
-  cart: cartReducer,
   auth: authReducer,
-  wishlist: wishlistReducer,
-  offers: offersReducer,
-  ui: uiReducer
-})
+  cart: cartReducer,
+  ui: uiReducer,
+});
 
-const persistConfig = {
-  key: 'root',
-  storage,
-  whitelist: ['cart'] // Only persist cart data
-}
-
-const persistedReducer = persistReducer(persistConfig, rootReducer)
+const persistedReducer = persistReducer(
+  {
+    key: "root",
+    version: 1,
+    storage,
+    whitelist: ["cart"],
+    // v1 stores a product snapshot in each cart item; carts saved before that are dropped.
+    migrate: createMigrate({
+      1: (state) => ({ ...state, cart: { items: {} } }) as typeof state,
+    }),
+  },
+  rootReducer,
+);
 
 export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE']
-      }
-    })
-})
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
+});
 
-export const persistor = persistStore(store)
+export const persistor = persistStore(store);
 
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch 
+export type RootState = ReturnType<typeof rootReducer>;
+export type AppDispatch = typeof store.dispatch;

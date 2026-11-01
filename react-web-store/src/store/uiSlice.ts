@@ -1,54 +1,41 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, nanoid, type PayloadAction } from "@reduxjs/toolkit";
 
-interface UIState {
-  isGlobalLoading: boolean
-  globalError: string | null
-  notification: {
-    message: string | null
-    type: 'success' | 'error' | 'info' | null
-  }
-}
+export type ToastType = "success" | "error";
+
+export type Toast = {
+  id: string;
+  message: string;
+  type: ToastType;
+};
+
+type UIState = {
+  toasts: Toast[];
+};
 
 const initialState: UIState = {
-  isGlobalLoading: false,
-  globalError: null,
-  notification: {
-    message: null,
-    type: null
-  }
-}
+  toasts: [],
+};
 
 const uiSlice = createSlice({
-  name: 'ui',
+  name: "ui",
   initialState,
   reducers: {
-    setGlobalLoading: (state, action: PayloadAction<boolean>) => {
-      state.isGlobalLoading = action.payload
+    showToast: {
+      reducer: (state, action: PayloadAction<Toast>) => {
+        state.toasts.push(action.payload);
+      },
+      prepare: (message: string, type: ToastType) => ({
+        payload: { id: nanoid(), message, type },
+      }),
     },
-    setGlobalError: (state, action: PayloadAction<string | null>) => {
-      state.globalError = action.payload
+    dismissToast: (state, action: PayloadAction<string>) => {
+      state.toasts = state.toasts.filter(
+        (toast) => toast.id !== action.payload,
+      );
     },
-    clearGlobalError: (state) => {
-      state.globalError = null
-    },
-    setNotification: (state, action: PayloadAction<{ message: string; type: 'success' | 'error' | 'info' }>) => {
-      state.notification = action.payload
-    },
-    clearNotification: (state) => {
-      state.notification = {
-        message: null,
-        type: null
-      }
-    }
-  }
-})
+  },
+});
 
-export const {
-  setGlobalLoading,
-  setGlobalError,
-  clearGlobalError,
-  setNotification,
-  clearNotification
-} = uiSlice.actions
+export const { showToast, dismissToast } = uiSlice.actions;
 
-export default uiSlice.reducer 
+export default uiSlice.reducer;
